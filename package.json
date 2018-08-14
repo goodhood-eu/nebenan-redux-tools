@@ -1,0 +1,52 @@
+{
+  "name": "nebenan-redux-tools",
+  "description": "A set of redux helpers",
+  "author": "Nebenan.de <max@nebenan.de>",
+  "license": "SEE LICENSE IN LICENSE FILE",
+  "readmeFilename": "README.md",
+  "homepage": "https://nebenan.de/",
+  "repository": "good-hood-gmbh/nebenan-redux-tools",
+  "bugs": "https://github.com/good-hood-gmbh/nebenan-redux-tools/issues",
+  "version": "1.0.0",
+  "engines": {
+    "node": "^8.x.x"
+  },
+  "scripts": {
+    "clean": "rm -rf ./lib/ || exit 1",
+    "build:babel": "NODE_ENV=production babel src --out-dir lib --copy-files",
+    "prepublishOnly": "npm run clean && npm run build:babel",
+    "lint": "eslint --ext .es,.js ./",
+    "lint:tofile": "eslint --ext .es,.js --no-color -o ./eslint-report.log ./",
+    "test": "npm run build:babel && env TZ='Europe/Berlin' mocha \"test/**/*.js\"",
+    "test:tofile": "npm run build:babel && mocha --no-colors -R spec \"test/**/*.js\" 2>&1 | tee test-report.log"
+  },
+  "devDependencies": {
+    "lodash": "^4.17.10",
+    "updeep": "^1.0.0",
+    "local-storage-adapter": "^2.0.0",
+    "escape-string-regexp": "^1.0.5",
+    "js-cookie": "^2.2.0",
+    "babel-cli": "6.26.0",
+    "babel-register": "6.26.0",
+    "babel-preset-env": "1.7.0",
+    "babel-preset-stage-3": "6.24.1",
+    "babel-plugin-transform-runtime": "6.23.0",
+    "babel-plugin-transform-node-env-inline": "0.4.3",
+    "eslint": "4.19.1",
+    "eslint-plugin-import": "2.12.0",
+    "eslint-config-airbnb-base": "12.1.0",
+    "mocha": "5.2.0",
+    "chai": "4.1.2",
+    "sinon": "5.0.10",
+    "proxyquire": "2.0.1"
+  },
+  "peerDependencies": {
+    "lodash": "^4.17.10",
+    "updeep": "^1.0.0",
+    "local-storage-adapter": "^2.0.0",
+    "escape-string-regexp": "^1.0.5"
+  },
+  "dependencies": {
+    "js-cookie": "^2.2.0"
+  }
+}
