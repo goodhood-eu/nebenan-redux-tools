@@ -1,21 +1,21 @@
-import { assert } from 'chai';
-import updeep from 'updeep';
+const { assert } = require('chai');
+const updeep = require('updeep');
 
-import {
+const {
   resolved,
   rejected,
-} from '../../../client/modules/network/types';
+} = require('../../lib/network/types');
 
-import {
+const {
   PAGINATION_STEP,
   PAGINATION_DEFAULTS,
   assignPaginationDefaults,
   paginationGenerator,
   buildPaginationQuery,
-} from '../../../client/modules/network/pagination';
+} = require('../../lib/network/pagination');
 
 
-describe('modules/network/pagination', () => {
+describe('network/pagination', () => {
   it('assignPaginationDefaults', () => {
     const state = {
       a: 1,

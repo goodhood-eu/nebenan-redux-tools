@@ -1,5 +1,5 @@
 import defaults from 'lodash/defaults';
-import { has } from 'nebenan-helpers/lib/data';
+import { has } from '../utils';
 import { resolved, rejected } from './types';
 
 export const PAGINATION_STEP = 20;

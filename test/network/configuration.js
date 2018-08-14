@@ -1,17 +1,17 @@
-import { assert } from 'chai';
+const { assert } = require('chai');
 
-import {
+const {
   configureNetwork,
   getApiRoot,
   getTrustedDomainRegex,
-} from '../../../client/modules/network/configuration';
+} = require('../../lib/network/configuration');
 
 const API = 'awesomeapi';
 const DOMAIN = 'wowzor.com';
 configureNetwork({ api: API, trustedDomain: DOMAIN });
 
 
-describe('modules/network/configuration', () => {
+describe('network/configuration', () => {
   it('getApiRoot', () => {
     assert.equal(getApiRoot(), API, 'setting api works');
   });

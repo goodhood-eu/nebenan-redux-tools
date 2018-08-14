@@ -1,12 +1,12 @@
-import { assert } from 'chai';
+const { assert } = require('chai');
 
-import {
+const {
   isExpired,
   isFetchable,
-} from '../../../client/modules/network/utils';
+} = require('../../lib/network/utils');
 
 
-describe('modules/network/utils', () => {
+describe('network/utils', () => {
   it('isExpired', () => {
     const state = { lastFetched: Date.now() - 1000 };
 

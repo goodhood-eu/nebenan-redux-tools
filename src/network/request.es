@@ -1,5 +1,5 @@
 import superagent from 'superagent';
-import { invoke } from 'nebenan-helpers/lib/utils';
+import { invoke } from '../utils';
 
 import { buildPaginationQuery } from './pagination';
 import { getApiRoot, getTrustedDomainRegex } from './configuration';
