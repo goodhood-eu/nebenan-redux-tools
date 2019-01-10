@@ -1,12 +1,18 @@
 import escapeStringRegexp from 'escape-string-regexp';
 
-let api = '';
+let baseUrl = '';
 let regex;
 
-export const configureNetwork = (options) => {
-  api = options.api;
+let requestHook;
+let responseHook;
+
+export const configureNetwork = (options = {}) => {
+  baseUrl = options.baseUrl;
   regex = new RegExp(`^https:\\/\\/(?:[\\w-]+\\.)?${escapeStringRegexp(options.trustedDomain)}`);
+  requestHook = options.requestHook;
+  responseHook = options.responseHook;
 };
 
-export const getApiRoot = () => api;
+export const getBaseUrl = () => baseUrl;
 export const getTrustedDomainRegex = () => regex;
+export const getGlobalHooks = () => ({ requestHook, responseHook });
