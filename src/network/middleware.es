@@ -11,19 +11,13 @@ export default (store) => (
       const { request, type } = action;
       const state = store.getState();
 
-      // raw network call
-      let promise;
-      if (typeof request === 'function') {
-        promise = request(createRequest, store.dispatch, state);
-        if (!promise) throw new Error('request function must return a promise');
-      } else {
-        // prevent unnecessary calls
-        if (request.shouldRequest && !request.shouldRequest(state)) return Promise.resolve(null);
-        const options = omit(request, 'shouldRequest');
-        if (!options.token) options.token = state.token;
+      // prevent unnecessary calls
+      if (request.shouldRequest && !request.shouldRequest(state)) return Promise.resolve(null);
 
-        promise = createRequest(options);
-      }
+      const options = omit(request, 'shouldRequest');
+      if (!options.token) options.token = state.token;
+
+      const promise = createRequest(options);
 
       promise
         .then((payload) => {
