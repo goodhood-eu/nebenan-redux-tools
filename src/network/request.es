@@ -1,4 +1,5 @@
 import axios, { CancelToken } from 'axios';
+import { stringify } from 'querystring';
 import { invoke } from '../utils';
 
 import { buildPaginationQuery } from './pagination';
@@ -21,6 +22,7 @@ const getRequestConfig = (options = {}) => {
 
   const config = {
     url,
+    paramsSerializer: stringify,
     headers: { Accept: 'application/json' },
   };
 
@@ -51,19 +53,19 @@ export default (options) => {
   const requestConfig = getRequestConfig(options);
 
   // These methods will mutate config object.
-  invoke(options.customize, requestConfig);
-  invoke(requestHook, requestConfig);
+  invoke(options.customize, requestConfig, options);
+  invoke(requestHook, requestConfig, options);
 
   const pipeResponse = (response) => {
     const body = (response && response.data) ? response.data : {};
-    invoke(responseHook, body);
+    invoke(responseHook, body, requestConfig, options);
     return body;
   };
 
   const rethrowError = ({ response }) => {
     const body = (response && response.data) ? response.data : {};
     body.statusCode = response && response.status ? parseInt(response.status, 10) : 500;
-    invoke(responseHook, body);
+    invoke(responseHook, body, requestConfig, options);
     throw body;
   };
 
