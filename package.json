@@ -7,7 +7,7 @@
   "homepage": "https://nebenan.de/",
   "repository": "good-hood-gmbh/nebenan-redux-tools",
   "bugs": "https://github.com/good-hood-gmbh/nebenan-redux-tools/issues",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "engines": {
     "node": "^10.x.x"
   },
@@ -30,6 +30,7 @@
     "@babel/plugin-transform-strict-mode": "^7.0.0",
     "@babel/preset-env": "^7.1.0",
     "@babel/runtime": "^7.2.0",
+    "axios": "^0.18.0",
     "babel-plugin-add-module-exports": "^1.0.0",
     "chai": "^4.2.0",
     "escape-string-regexp": "^1.0.5",
@@ -45,6 +46,7 @@
   },
   "peerDependencies": {
     "@babel/runtime": "^7.0.0",
+    "axios": "^0.18.0",
     "lodash": "^4.17.10",
     "updeep": "^1.0.0",
     "local-storage-adapter": "^2.0.0",

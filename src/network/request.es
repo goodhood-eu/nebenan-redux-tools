@@ -1,8 +1,9 @@
-import superagent from 'superagent';
+import axios, { CancelToken } from 'axios';
+import { stringify } from 'querystring';
 import { invoke } from '../utils';
 
 import { buildPaginationQuery } from './pagination';
-import { getApiRoot, getTrustedDomainRegex } from './configuration';
+import { getBaseUrl, getTrustedDomainRegex, getGlobalHooks } from './configuration';
 
 const EXTERNAL_URL_PREFIX = /^https?:\/\//;
 
@@ -12,55 +13,61 @@ export const isTrustworthyUrl = (url) => {
   return regex && regex.test(url);
 };
 
-export default (options = {}) => {
-  if (!options.type) options.type = 'get';
-
-  if (options.type === 'query') {
-    options.type = 'get';
-    options.query = buildPaginationQuery(options.query, options.pagination);
-  }
-
+const getRequestConfig = (options = {}) => {
   const isExternal = isExternalUrl(options.url);
   const isTrustworthy = isTrustworthyUrl(options.url);
 
   let url = options.url;
-  if (!isExternal) url = `${getApiRoot()}${url}`;
+  if (!isExternal) url = `${getBaseUrl()}${url}`;
 
-  const request = superagent(options.type, url);
-
-  if (options.token && (!isExternal || isTrustworthy)) request.set({ 'X-AUTH-TOKEN': options.token });
-  request.set({ Accept: 'application/json' });
-
-  if ((options.type === 'post' || options.type === 'put') && !options.multipart) {
-    request.set('Content-Type', 'application/json');
-  }
-
-  if (options.query) request.query(options.query);
-  if (options.payload) request.send(options.payload);
-  invoke(options.customize, request);
-
-  const executor = (resolve, reject) => {
-    request.end((originalError, originalResponse) => {
-      let error = originalError;
-      let response = originalResponse;
-      if (options.interceptor) {
-        const intercepted = options.interceptor({ error, response });
-        error = intercepted.error;
-        response = intercepted.response;
-      }
-
-      const body = (response && response.body) ? response.body : {};
-
-      if (error) {
-        body.statusCode = response && response.status ? parseInt(response.status, 10) : 500;
-        reject(body);
-      } else {
-        resolve(body);
-      }
-    });
+  const config = {
+    url,
+    paramsSerializer: stringify,
+    headers: { Accept: 'application/json' },
   };
 
-  const promise = new Promise(executor);
+  if (options.type) config.method = options.type;
+  if (options.query) config.params = options.query;
+  if (options.payload) config.data = options.payload;
 
-  return { request, promise };
+  if (options.getAbortCallback) config.cancelToken = new CancelToken(options.getAbortCallback);
+
+  if (options.type === 'query') {
+    config.method = 'get';
+    config.params = buildPaginationQuery(options.query, options.pagination);
+  }
+
+  if (options.token && (!isExternal || isTrustworthy)) {
+    config.headers['X-AUTH-TOKEN'] = options.token;
+  }
+
+  if ((options.type === 'post' || options.type === 'put') && !options.multipart) {
+    config.headers['Content-Type'] = 'application/json';
+  }
+
+  return config;
+};
+
+export default (options) => {
+  const { requestHook, responseHook } = getGlobalHooks();
+  const requestConfig = getRequestConfig(options);
+
+  // These methods will mutate config object.
+  invoke(options.customize, requestConfig, options);
+  invoke(requestHook, requestConfig, options);
+
+  const pipeResponse = (response) => {
+    const body = (response && response.data) ? response.data : {};
+    invoke(responseHook, body, requestConfig, options);
+    return body;
+  };
+
+  const rethrowError = ({ response }) => {
+    const body = (response && response.data) ? response.data : {};
+    body.statusCode = response && response.status ? parseInt(response.status, 10) : 500;
+    invoke(responseHook, body, requestConfig, options);
+    throw body;
+  };
+
+  return axios(requestConfig).then(pipeResponse).catch(rethrowError);
 };
