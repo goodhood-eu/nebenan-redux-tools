@@ -7,7 +7,7 @@
   "homepage": "https://nebenan.de/",
   "repository": "good-hood-gmbh/nebenan-redux-tools",
   "bugs": "https://github.com/good-hood-gmbh/nebenan-redux-tools/issues",
-  "version": "3.0.0-beta2",
+  "version": "3.0.0",
   "engines": {
     "node": "^10.x.x"
   },
