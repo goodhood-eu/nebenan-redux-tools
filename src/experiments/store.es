@@ -1,5 +1,5 @@
 import Cookies from 'js-cookie';
-import { stringify, parse } from 'querystring';
+import { stringify, parse } from 'qs';
 
 let keyName;
 let keyExpires;

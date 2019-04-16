@@ -1,5 +1,5 @@
 import axios, { CancelToken } from 'axios';
-import { stringify } from 'querystring';
+import { stringify } from 'qs';
 import { invoke } from '../utils';
 
 import { buildPaginationQuery } from './pagination';

@@ -7,7 +7,7 @@
   "homepage": "https://nebenan.de/",
   "repository": "good-hood-gmbh/nebenan-redux-tools",
   "bugs": "https://github.com/good-hood-gmbh/nebenan-redux-tools/issues",
-  "version": "3.0.0",
+  "version": "4.0.0",
   "engines": {
     "node": "^10.x.x"
   },
@@ -23,25 +23,26 @@
     "test:tofile": "npm run build:babel && TZ='GMT' mocha --no-colors -R spec \"test/**/*.js\" 2>&1 | tee test-report.log"
   },
   "devDependencies": {
-    "@babel/cli": "^7.1.0",
-    "@babel/core": "^7.1.0",
+    "@babel/cli": "^7.4.3",
+    "@babel/core": "^7.4.3",
     "@babel/plugin-proposal-json-strings": "^7.0.0",
-    "@babel/plugin-transform-runtime": "^7.1.0",
+    "@babel/plugin-transform-runtime": "^7.4.3",
     "@babel/plugin-transform-strict-mode": "^7.0.0",
-    "@babel/preset-env": "^7.1.0",
-    "@babel/runtime": "^7.2.0",
+    "@babel/preset-env": "^7.4.3",
+    "@babel/runtime": "^7.4.3",
     "axios": "^0.18.0",
     "babel-plugin-add-module-exports": "^1.0.0",
     "chai": "^4.2.0",
     "escape-string-regexp": "^1.0.5",
-    "eslint": "^5.10.0",
+    "eslint": "^5.16.0",
     "eslint-config-airbnb-base": "^13.1.0",
-    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-import": "^2.17.1",
     "local-storage-adapter": "^2.0.0",
     "lodash": "^4.17.11",
-    "mocha": "^5.2.0",
+    "mocha": "^6.1.3",
     "proxyquire": "^2.1.0",
-    "sinon": "^7.2.2",
+    "qs": "^6.7.0",
+    "sinon": "^7.3.1",
     "updeep": "^1.1.0"
   },
   "peerDependencies": {
@@ -50,7 +51,8 @@
     "lodash": "^4.17.10",
     "updeep": "^1.0.0",
     "local-storage-adapter": "^2.0.0",
-    "escape-string-regexp": "^1.0.5"
+    "escape-string-regexp": "^1.0.5",
+    "qs": "^6.7.0"
   },
   "dependencies": {
     "js-cookie": "^2.2.0"
