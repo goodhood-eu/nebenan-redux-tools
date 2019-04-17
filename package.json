@@ -7,7 +7,7 @@
   "homepage": "https://nebenan.de/",
   "repository": "good-hood-gmbh/nebenan-redux-tools",
   "bugs": "https://github.com/good-hood-gmbh/nebenan-redux-tools/issues",
-  "version": "4.1.0",
+  "version": "4.2.0",
   "engines": {
     "node": "^10.x.x"
   },
@@ -33,7 +33,7 @@
     "axios": "^0.18.0",
     "babel-plugin-add-module-exports": "^1.0.0",
     "chai": "^4.2.0",
-    "escape-string-regexp": "^2.0.0",
+    "escape-string-regexp": "^1.0.5",
     "eslint": "^5.16.0",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.17.1",
@@ -51,7 +51,7 @@
     "lodash": "^4.17.10",
     "updeep": "^1.0.0",
     "local-storage-adapter": "^2.0.0",
-    "escape-string-regexp": "^2.0.0",
+    "escape-string-regexp": "^1.0.5",
     "qs": "^6.7.0"
   },
   "dependencies": {
