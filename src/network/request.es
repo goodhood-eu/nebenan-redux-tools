@@ -13,6 +13,8 @@ export const isTrustworthyUrl = (url) => {
   return regex && regex.test(url);
 };
 
+const paramsSerializer = (params) => stringify(params, { indices: false });
+
 const getRequestConfig = (options = {}) => {
   const isExternal = isExternalUrl(options.url);
   const isTrustworthy = isTrustworthyUrl(options.url);
@@ -22,7 +24,7 @@ const getRequestConfig = (options = {}) => {
 
   const config = {
     url,
-    paramsSerializer: stringify,
+    paramsSerializer,
     headers: { Accept: 'application/json' },
   };
 
