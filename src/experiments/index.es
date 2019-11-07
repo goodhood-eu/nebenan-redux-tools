@@ -10,7 +10,8 @@ const createExperiments = (state, hash) => (
 );
 
 export const updateExperiments = (current, configHash, overrides) => {
-  let updated = {};
+  let updated = { ...current };
+
   if (configHash) updated = createExperiments(current, configHash);
   if (overrides) defaults(updated, overrides);
 
