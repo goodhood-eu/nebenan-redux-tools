@@ -15,7 +15,7 @@ export const isTrustworthyUrl = (url) => {
 
 const paramsSerializer = (params) => stringify(params, { indices: false });
 
-const getRequestError = ({ response, request, message }) => {
+const getNetworkError = ({ response, request, message }) => {
   if (response) {
     return {
       ...response.data,
@@ -88,9 +88,10 @@ export default (options) => {
   };
 
   const rethrowError = (error) => {
-    const requestError = getRequestError(error);
-    invoke(responseHook, requestError, requestConfig, options);
-    throw requestError;
+    const networkError = getNetworkError(error);
+
+    invoke(responseHook, networkError, requestConfig, options);
+    throw networkError;
   };
 
   return axios(requestConfig).then(pipeResponse).catch(rethrowError);
