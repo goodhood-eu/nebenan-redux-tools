@@ -15,6 +15,29 @@ export const isTrustworthyUrl = (url) => {
 
 const paramsSerializer = (params) => stringify(params, { indices: false });
 
+const getNetworkError = ({ response, request, message }) => {
+  if (response) {
+    return {
+      ...response.data,
+      statusCode: response.status ? parseInt(response.status, 10) : 500,
+    };
+  }
+
+  if (request) {
+    return {
+      data: request,
+      message: 'No response from server',
+      statusCode: 500,
+    };
+  }
+
+  return {
+    data: message,
+    message: 'Error while creating request',
+    statusCode: 400,
+  };
+};
+
 const getRequestConfig = (options = {}) => {
   const isExternal = isExternalUrl(options.url);
   const isTrustworthy = isTrustworthyUrl(options.url);
@@ -64,11 +87,11 @@ export default (options) => {
     return body;
   };
 
-  const rethrowError = ({ response }) => {
-    const body = (response && response.data) ? response.data : {};
-    body.statusCode = response && response.status ? parseInt(response.status, 10) : 500;
-    invoke(responseHook, body, requestConfig, options);
-    throw body;
+  const rethrowError = (error) => {
+    const networkError = getNetworkError(error);
+
+    invoke(responseHook, networkError, requestConfig, options);
+    throw networkError;
   };
 
   return axios(requestConfig).then(pipeResponse).catch(rethrowError);
