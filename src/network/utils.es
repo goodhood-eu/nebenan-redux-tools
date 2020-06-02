@@ -10,7 +10,7 @@ export const isFetchable = (state, size) => {
 };
 
 export const getTotalCount = (collection, result) => {
-  if (!collection || !Array.isArray(collection)) return;
+  if (!collection || !Array.isArray(collection)) return 0;
   const resultLength = result ? result.length : 0;
   return collection.length + (resultLength * 2);
 };
