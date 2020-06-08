@@ -8,3 +8,9 @@ export const isFetchable = (state, size) => {
   if (typeof state.total !== 'number') return true;
   return state.total >= size && state.collection.length < size;
 };
+
+export const getTotalCount = (collection, result) => {
+  if (!collection || !Array.isArray(collection)) return 0;
+  const resultLength = result ? result.length : 0;
+  return collection.length + (resultLength * 2);
+};

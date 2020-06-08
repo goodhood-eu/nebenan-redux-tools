@@ -7,7 +7,7 @@
   "homepage": "https://nebenan.de/",
   "repository": "good-hood-gmbh/nebenan-redux-tools",
   "bugs": "https://github.com/good-hood-gmbh/nebenan-redux-tools/issues",
-  "version": "4.7.1",
+  "version": "4.8.0",
   "scripts": {
     "reinstall": "rm -rf node_modules package-lock.json && npm install",
     "check": "npm test && npm run lint && echo \"\\033[0;32mReady to publish\\033[0m\"",
