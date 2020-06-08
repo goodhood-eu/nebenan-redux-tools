@@ -41,8 +41,8 @@ describe('network/utils', () => {
 
   it('getTotalCount', () => {
     assert.equal(getTotalCount([], []), 0, 'Empty collection and result');
-    assert.equal(getTotalCount(), undefined, 'No arguments passed');
-    assert.equal(getTotalCount({}, {}), undefined, 'Passed an object instead of array');
+    assert.equal(getTotalCount(), 0, 'No arguments passed');
+    assert.equal(getTotalCount({}, {}), 0, 'Passed an object instead of array');
     assert.equal(getTotalCount([1, 2, 3]), 3, 'No result passed');
     assert.equal(getTotalCount([1, 2, 3], [4, 5, 6]), 9, 'Two arrays passed');
   });
