@@ -6,7 +6,7 @@ import { setSession } from './actions';
 
 const getSession = (state) => state.session;
 
-export const useSessionValue = (key, defaultValue = null) => {
+export const useSessionField = (key, defaultValue = null) => {
   const [value, setValue] = useState(defaultValue);
   const session = useSelector(getSession);
 
