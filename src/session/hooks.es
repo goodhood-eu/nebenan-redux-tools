@@ -1,17 +1,18 @@
 import { useState, useEffect, useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { useShallowEqualSelector } from 'nebenan-react-hocs/lib/redux_hooks';
 import getField from 'lodash/get';
 import { setSession } from './actions';
 
 
 const getSession = (state) => state.session;
 
-export const useSessionField = (key, defaultValue = null) => {
+export const useSessionField = (fieldPath, defaultValue = null) => {
   const [value, setValue] = useState(defaultValue);
-  const session = useSelector(getSession);
+  const session = useShallowEqualSelector(getSession);
 
   useEffect(() => {
-    setValue(getField(session, key));
+    setValue(getField(session, fieldPath));
   }, [session]);
 
   return value;
