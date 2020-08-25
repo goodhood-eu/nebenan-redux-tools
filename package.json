@@ -7,7 +7,7 @@
   "homepage": "https://nebenan.de/",
   "repository": "good-hood-gmbh/nebenan-redux-tools",
   "bugs": "https://github.com/good-hood-gmbh/nebenan-redux-tools/issues",
-  "version": "4.8.0",
+  "version": "5.0.0",
   "scripts": {
     "reinstall": "rm -rf node_modules package-lock.json && npm install",
     "check": "npm test && npm run lint && echo \"\\033[0;32mReady to publish\\033[0m\"",
@@ -38,8 +38,11 @@
     "local-storage-adapter": "^2.0.0",
     "lodash": "^4.17.15",
     "mocha": "^6.2.2",
+    "nebenan-react-hocs": "^5.7.0",
     "proxyquire": "^2.1.3",
     "qs": "^6.9.0",
+    "react": "^16.13.1",
+    "react-redux": "^7.2.1",
     "sinon": "^7.5.0",
     "terser": "^4.3.9",
     "updeep": "^1.2.0"
@@ -47,11 +50,14 @@
   "peerDependencies": {
     "@babel/runtime": "^7.6.2",
     "axios": "^0.19.0",
-    "lodash": "^4.17.15",
-    "updeep": "^1.2.0",
-    "local-storage-adapter": "^2.0.0",
     "escape-string-regexp-browser": "1.0.0",
-    "qs": "^6.9.0"
+    "local-storage-adapter": "^2.0.0",
+    "lodash": "^4.17.15",
+    "nebenan-react-hocs": "^5.7.0",
+    "qs": "^6.9.0",
+    "react": "^16.12.0",
+    "react-redux": "^7.2.1",
+    "updeep": "^1.2.0"
   },
   "dependencies": {
     "js-cookie": "^2.2.1"
