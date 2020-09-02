@@ -5,11 +5,13 @@ import getField from 'lodash/get';
 import { setSession } from './actions';
 
 
-const getSession = (state) => state.session;
+const getSession = ({ session }) => session;
+
+export const useSession = () => useShallowEqualSelector(getSession);
 
 export const useSessionField = (fieldPath, defaultValue = null) => {
   const [value, setValue] = useState(defaultValue);
-  const session = useShallowEqualSelector(getSession);
+  const session = useSession();
 
   useEffect(() => {
     setValue(getField(session, fieldPath));
