@@ -3,7 +3,7 @@ import { stringify } from 'qs';
 import { invoke } from '../utils';
 
 import { buildPaginationQuery } from './pagination';
-import { getBaseUrl, getTrustedDomainRegex, getGlobalHooks } from './configuration';
+import { getBaseUrl, getTrustedDomainRegex, getGlobalHooks, getLocaleHeader } from './configuration';
 
 const EXTERNAL_URL_PREFIX = /^https?:\/\//;
 
@@ -41,6 +41,7 @@ const getNetworkError = ({ response, request, message }) => {
 const getRequestConfig = (options = {}) => {
   const isExternal = isExternalUrl(options.url);
   const isTrustworthy = isTrustworthyUrl(options.url);
+  const locale = options.locale || getLocaleHeader();
 
   let url = options.url;
   if (!isExternal) url = `${getBaseUrl()}${url}`;
@@ -62,8 +63,9 @@ const getRequestConfig = (options = {}) => {
     config.params = buildPaginationQuery(options.query, options.pagination);
   }
 
-  if (options.token && (!isExternal || isTrustworthy)) {
-    config.headers['X-AUTH-TOKEN'] = options.token;
+  if (!isExternal || isTrustworthy) {
+    if (options.token) config.headers['X-AUTH-TOKEN'] = options.token;
+    if (locale) config.headers['X-Translations-Lang'] = locale;
   }
 
   if ((options.type === 'post' || options.type === 'put') && !options.multipart) {
