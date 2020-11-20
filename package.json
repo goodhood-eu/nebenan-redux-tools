@@ -7,7 +7,7 @@
   "homepage": "https://nebenan.de/",
   "repository": "good-hood-gmbh/nebenan-redux-tools",
   "bugs": "https://github.com/good-hood-gmbh/nebenan-redux-tools/issues",
-  "version": "5.4.0",
+  "version": "5.5.0",
   "files": [
     "lib/*.js",
     "lib/*/*.js"
@@ -43,8 +43,8 @@
     "local-storage-adapter": "^2.0.0",
     "lodash": "^4.17.15",
     "mocha": "^8.2.1",
-    "nebenan-helpers": "^4.4.0",
-    "nebenan-react-hocs": "^6.0.0",
+    "nebenan-helpers": "^4.5.0",
+    "nebenan-react-hocs": "^7.0.0",
     "proxyquire": "^2.1.3",
     "qs": "^6.9.0",
     "react": "^17.0.1",
@@ -60,7 +60,7 @@
     "escape-string-regexp-browser": "1.1.0",
     "local-storage-adapter": "^2.0.0",
     "lodash": "^4.17.15",
-    "nebenan-react-hocs": "^5.11.0 || ^6.0.0",
+    "nebenan-react-hocs": "^5.11.0 || ^6.0.0 || ^7.0.0",
     "qs": "^6.9.0",
     "react": "^16.14.0 || ^17.0.1",
     "react-redux": "^7.2.1",
