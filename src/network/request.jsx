@@ -4,7 +4,7 @@ import { invoke } from '../utils';
 
 import { buildPaginationQuery } from './pagination';
 import { getBaseUrl, getTrustedDomainRegex, getGlobalHooks, getLocaleHeader } from './configuration';
-import { STATUS_CODE_NO_RESONSE, STATUS_CODE_REQUEST_FAILED } from './constants';
+import { STATUS_CODE_NO_RESPONSE, STATUS_CODE_REQUEST_FAILED } from './constants';
 
 const EXTERNAL_URL_PREFIX = /^https?:\/\//;
 
@@ -28,7 +28,7 @@ const getNetworkError = ({ response, request, message }) => {
     return {
       data: request,
       message: 'No response from server',
-      statusCode: STATUS_CODE_NO_RESONSE,
+      statusCode: STATUS_CODE_NO_RESPONSE,
     };
   }
 
