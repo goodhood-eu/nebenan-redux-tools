@@ -205,7 +205,7 @@ dispatch({
 ```
 
 
-### `delete` / `head` / `options` / `post` / `put` / `patch`
+### `delete` / `post` / `put`
 
 ```js
 dispatch({
