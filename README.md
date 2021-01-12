@@ -15,7 +15,7 @@ A set of redux helpers.
   - [Mock Responses](#mock-response)
   - [Standalone Request](#standalone-request)
   - [Customize](#customize)
-
+  
 # Promise Middleware
 The promise middleware gets triggered by dispatching actions with `promise` in payload. The middleware will dispatch resolved or rejected actions when the promise is fulfilled.
 
@@ -67,7 +67,6 @@ dispatch({
 ```
 
 ```js
-// reducer
 import { resolved, rejected } from 'nebenan-redux-tools/lib/network/types';
 
 export default (state = getDefaultState(), action) => {
@@ -93,9 +92,9 @@ export default (state = getDefaultState(), action) => {
 
 ## Trustworthy Endpoints
 
-Requests to trustworthy endpoints behave a bit different from external endpoints.
+Requests to trustworthy endpoints will enable the [X-Translations-Lang Header](#x-translations-lang-header) and [API Token](#api-token) features.
 
-Setup trusted domain via global config:
+Set trusted domain via global config:
 ```js
 import { configureNetwork } from 'nebenan-redux-tools/lib/network';
 
@@ -107,24 +106,24 @@ configureNetwork({
 
 ## API Token
 
-Requests to [trustworthy endpoints](#trustworthy-endpoints) will contain the api token configured in request options. 
+Requests to [trustworthy endpoints](#trustworthy-endpoints) will have the `X-AUTH-TOKEN` header set, containing the api token configured in request options or through token middleware. 
 
-Default: `state.token`
+Default: `state.token` (see token middleware)
 
 Overwrite:
 ```js
-{
+dispatch({
   type: "some-type", 
   request: {
     url: "/some/endpoint",
     token: "special-api-token"
   }
-}
+})
 ```
 
 ## X-Translations-Lang Header
 
-Requests to [trustworthy endpoints](#trustworthy-endpoints) will have an `X-Translations-Lang` header containing the configured locale.
+Requests to [trustworthy endpoints](#trustworthy-endpoints) will have the `X-Translations-Lang` header set, containing the locale configured in request options or through global config.
 
 Default via global config: 
 ```js
@@ -138,21 +137,21 @@ configureNetwork({
 
 Overwrite:
 ```js
-{
+dispatch({
   type: "some-type",
   request: {
     url: "/some/endpoint",
     locale: "en-US"  
   }
-}
+})
 ```
 
 ## Should Request
 
-Prevents unnecessary requests by checking state beforehand. Can be used to fetch some resources only once. 
+Prevents unnecessary requests by checking state beforehand. 
 
 ```js
-{
+dispatch({
   type: "some-type",
   request: {
     url: "/some/endpoint",
@@ -160,12 +159,12 @@ Prevents unnecessary requests by checking state beforehand. Can be used to fetch
      return !state.isFetched;
     }
   }
-}
+})
 ```
 
 ## Abort Callback
 
-Requests can be cancelled as long as they are still running. You receive the cancel function by providing `getAbortCallback` in request options.
+Allows to cancel running requests. You receive the cancel function by providing `getAbortCallback` in request options.
 
 ```js
 let cancelRequest;
@@ -188,43 +187,48 @@ cancelRequest();
 
 ## Request Types
 
-`request.type` attribute determines which http method should be used.
+`request.type` determines used HTTP method
 
 ### `query`
 
-Sends out GET request. Collects parameters from `request.query` and applies pagination query options if there are any.
+Sends out GET request. Collects parameters from `request.query` and applies [pagination](#pagination) query options if there are any.
 
 ```js
-
-{
+dispatch({
   type: "some-type",
   request: {
      url: "/users",
      type: 'query',
      query: { q: 'Peter' } 
   }
-}
+})
 ```
 
 
 ### `delete` / `head` / `options` / `post` / `put` / `patch`
 
 ```js
-
-{
+dispatch({
   type: "some-type",
   request: {
     url: "/some/endpoint/123",
     type: 'put',
     payload: { user: { email, password }}
   }  
-}
+})
 ```
 
 
 ## Pagination
 
 There is some boilerplate needed to fully support paginated lists loaded over the network. These helpers help with managing state and sending pagination params over the network.
+
+The endpoint you are accessing needs to fulfill following requirements:
+- Parameters
+  - `per_page`
+  - `lower` / `higher`
+- Response
+  - `total_count` (`state.total` needs to be updated manually if field does not exist)
 
 ### `assignPaginationDefaults` / `paginationGenerator` helpers
 
@@ -259,14 +263,15 @@ export const reducer = (state = getDefaultState(), action) => {
 The state now holds the following information
 ```js
 {
+  // (managed by paginationGenerator)
   currentPage: 0, 
-  // datetime of last fetch
+  // datetime of last fetch (managed by paginationGenerator)
   lastFetched: 0,
-  // request in progress  
+  // request in progress (managed by paginationGenerator)
   isFetching: false,
-  // request failed  
+  // request failed (managed by paginationGenerator) 
   isFailed: false,  
-  // total amount of items over all pages
+  // total amount of items over all pages (managed by paginationGenerator)
   total: null,
   // item ids for current page  
   collection: [],
@@ -369,11 +374,11 @@ The network layer uses [axios](https://github.com/axios/axios) under the hood. T
 
 Hooks:
 - `requestHook(requestConfig, requestOptions)`
-  - `requestConfig` the [axios config](https://github.com/axios/axios#request-config) to be mutated
+  - `requestConfig` the [axios request config](https://github.com/axios/axios#request-config) to be mutated
   - `requestOptions` the `request` object provided inside the action
 - `responseHook(body, requestConfig, requestOptions)`
   - `body` response data to be mutated
-  - `requestConfig` the [axios config](https://github.com/axios/axios#request-config)
+  - `requestConfig` the [axios request config](https://github.com/axios/axios#request-config)
   - `requestOptions` the `request` object provided inside the action
   
 ### Setup global hooks
