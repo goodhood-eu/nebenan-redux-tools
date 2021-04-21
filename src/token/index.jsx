@@ -41,7 +41,7 @@ export const persistToken = (token) => {
 export const reducer = (state = null, action) => {
   switch (action.type) {
     case types.TOKEN_SET: {
-      if (process.browser) persistToken(action.payload);
+      if (typeof window !== 'undefined') persistToken(action.payload);
       return action.payload;
     }
     default: {
