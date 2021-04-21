@@ -24,11 +24,11 @@ export const reducer = (state = {}, action) => {
       const nextState = updeep({ [name]: isDelete ? undefined : value }, state);
       if (isDelete) delete nextState[name];
 
-      if (process.browser) persistExperiments(nextState);
+      if (typeof window !== 'undefined') persistExperiments(nextState);
       return nextState;
     }
     case types.EXPERIMENTS_SET: {
-      if (process.browser) persistExperiments(action.payload);
+      if (typeof window !== 'undefined') persistExperiments(action.payload);
       return action.payload;
     }
     default: {

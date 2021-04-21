@@ -1,6 +1,4 @@
-const isServerEnv = (
-  typeof process !== 'undefined' && process && process.versions && process.versions.node
-);
+const isServerEnv = typeof window === 'undefined';
 
 const getDefaultState = () => ({ activeRequestsCount: 0, isNetworkActive: false });
 
