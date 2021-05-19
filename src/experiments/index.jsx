@@ -18,4 +18,4 @@ export const updateExperiments = (current, configHash, overrides) => {
   return updated;
 };
 
-export * from './hooks';
+export { useExperiments } from './hooks';
