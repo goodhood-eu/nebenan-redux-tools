@@ -3,6 +3,8 @@ nebenan-redux-tools
 
 A set of redux helpers.
 
+- [Experiments Middleware](#experiments-middleware)
+- [Token Middleware](#token-middleware)
 - [Promise Middleware](#promise-middleware)
 - [Network Middleware](#network-middleware)
   - [Trustworthy Endpoints](#trustworthy-endpoints)
@@ -15,6 +17,57 @@ A set of redux helpers.
   - [Mock Responses](#mock-response)
   - [Standalone Request](#standalone-request)
   - [Customize](#customize)
+  
+# Experiments Middleware
+## Setup
+
+**NOT COMPLETE**
+```js
+import { reducer as experiments } from 'nebenan-redux-tools/lib/experiments/state';
+
+const reducers = { 
+  // It is assumed that the experiment reducer's state
+  // is available under `state.experiments`
+  experiments 
+};
+
+// ...
+
+const createFromState = (initialState) => (
+  createStore(
+    combineReducers(reducers),
+    initialState,
+    composeEnhancers(applyMiddleware(...middleware)),
+  )
+);
+
+export default createFromState
+```
+
+# Token Middleware
+## Setup
+**NOT COMPLETE**
+```js
+import { reducer as token } from 'nebenan-redux-tools/lib/token';
+
+const reducers = {
+  // It is assumed that the experiment reducer's state
+  // is available under `state.token`
+  token
+};
+
+// ...
+
+const createFromState = (initialState) => (
+  createStore(
+    combineReducers(reducers),
+    initialState,
+    composeEnhancers(applyMiddleware(...middleware)),
+  )
+);
+
+export default createFromState
+```
   
 # Promise Middleware
 The promise middleware gets triggered by dispatching actions with `promise` in payload. The middleware will dispatch resolved or rejected actions when the promise is fulfilled.
