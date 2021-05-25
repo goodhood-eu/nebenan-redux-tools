@@ -49,3 +49,5 @@ export const reducer = (state = null, action) => {
     }
   }
 };
+
+export { useToken } from './hooks';
