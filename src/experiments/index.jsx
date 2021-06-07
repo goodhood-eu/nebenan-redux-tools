@@ -9,7 +9,7 @@ const createExperiments = (state, hash) => (
   }, {})
 );
 
-export const updateExperiments = (current, randomExperiments, otherExperiments, overrides = {}) => {
+export const updateExperiments = (current, randomExperiments, otherExperiments, overrides) => {
   let updated = { ...current };
 
   if (randomExperiments) updated = createExperiments(current, randomExperiments);
