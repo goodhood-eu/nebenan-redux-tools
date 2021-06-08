@@ -4,28 +4,69 @@ const {
   updateExperiments,
 } = require('../../lib/experiments');
 
-const configHash = {
-  a: 1,
-  b: 2,
-  c: 99,
-};
-
 describe('experiments', () => {
-  it('updateExperiments', () => {
-    const current = {
-      a: 42,
-      rocket: 69,
-    };
+  describe('updateExperiments', () => {
+    it('returns object on empty call', () => {
+      assert.isObject(updateExperiments({}));
+    });
 
-    const updated = updateExperiments(current, configHash);
-    const custom = updateExperiments(current, null, configHash);
+    context('with random experiments', () => {
+      it('keeps original setting', () => {
+        assert.deepEqual(
+          updateExperiments(
+            { donations: 1 },
+            { donations: 5 },
+          ),
+          { donations: 1 },
+        );
+      });
 
-    assert.isObject(updateExperiments({}), 'returns object');
-    assert.equal(updated.a, current.a, 'doesn\'t change existing');
-    assert.isBelow(updated.b, configHash.b, 'sets correct value');
-    assert.isBelow(updated.c, configHash.c, 'sets correct value');
+      it('sets new variation if not yet set', () => {
+        const updated = updateExperiments(
+          { },
+          { travel_fun: 2 },
+        );
 
-    assert.isObject(updateExperiments({}, null, {}), 'returns object');
-    assert.equal(custom.a, current.a, 'doesn\'t change existing with custom props');
+        assert.isBelow(updated.travel_fun, 2);
+      });
+    });
+
+    context('with other experiments', () => {
+      it('keeps original setting', () => {
+        assert.deepEqual(
+          updateExperiments(
+            { donations: 1 },
+            null,
+            { donations: 5 },
+          ),
+          { donations: 1 },
+        );
+      });
+
+      it('sets given variation if not yet set', () => {
+        assert.deepEqual(
+          updateExperiments(
+            { },
+            null,
+            { donations: 5 },
+          ),
+          { donations: 5 },
+        );
+      });
+    });
+
+    context('with overrides', () => {
+      it('overwrites everything previously set', () => {
+        assert.deepEqual(
+          updateExperiments(
+            { donations: 2 },
+            { donations: 3 },
+            { donations: 5 },
+            { donations: 69 },
+          ),
+          { donations: 69 },
+        );
+      });
+    });
   });
 });

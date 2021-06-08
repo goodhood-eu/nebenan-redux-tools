@@ -9,11 +9,12 @@ const createExperiments = (state, hash) => (
   }, {})
 );
 
-export const updateExperiments = (current, configHash, overrides) => {
+export const updateExperiments = (current, randomExperiments, otherExperiments, overrides) => {
   let updated = { ...current };
 
-  if (configHash) updated = createExperiments(current, configHash);
-  if (overrides) defaults(updated, overrides);
+  if (randomExperiments) updated = createExperiments(current, randomExperiments);
+  if (otherExperiments) defaults(updated, otherExperiments);
+  if (overrides) updated = { ...updated, ...overrides };
 
   return updated;
 };
