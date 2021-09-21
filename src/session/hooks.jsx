@@ -10,8 +10,8 @@ const getSession = ({ session }) => session;
 export const useSession = () => useShallowEqualSelector(getSession);
 
 export const useSessionField = (fieldPath, defaultValue = null) => {
-  const [value, setValue] = useState(defaultValue);
   const session = useSession();
+  const [value, setValue] = useState(getField(session, fieldPath) ?? defaultValue);
 
   useEffect(() => {
     setValue(getField(session, fieldPath));
