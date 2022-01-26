@@ -1,4 +1,4 @@
-import { useShallowEqualSelector } from 'nebenan-react-hocs/lib/redux_hooks';
+import { useShallowEqualSelector } from '../utils';
 
 const selectExperiments = ({ experiments }) => experiments;
 export const useExperiments = () => useShallowEqualSelector(selectExperiments);

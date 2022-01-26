@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
-import { useShallowEqualSelector } from 'nebenan-react-hocs/lib/redux_hooks';
 import getField from 'lodash/get';
+import { useShallowEqualSelector } from '../utils';
 import { setSession } from './actions';
 
 
