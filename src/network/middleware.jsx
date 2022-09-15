@@ -1,58 +1,49 @@
 import omit from 'lodash/omit';
 
 import createRequest from './request';
+import { getErrorHandler } from './configuration';
 import { resolved, rejected } from './types';
 
+export default (store) => (
+  (next) => (
+    (action) => {
+      if (!action.request) return next(action);
+      const { request, type } = action;
+      const state = store.getState();
 
-export default (recordClientError) => {
-  console.log(recordClientError);
+      // prevent unnecessary calls
+      if (request.shouldRequest && !request.shouldRequest(state)) return Promise.resolve(null);
 
-  return (store) => (
-    (next) => (
-      (action) => {
-        if (!action.request) return next(action);
-        const { request, type } = action;
-        const state = store.getState();
+      const options = omit(request, 'shouldRequest');
+      if (!options.token) options.token = state.token;
 
-        // prevent unnecessary calls
-        if (request.shouldRequest && !request.shouldRequest(state)) return Promise.resolve(null);
+      const promise = createRequest(options);
 
-        const options = omit(request, 'shouldRequest');
-        if (!options.token) options.token = state.token;
+      promise
+        .then((payload) => {
+          const meta = { isRequestActive: false, ...action.meta };
+          const newAction = { ...omit(action, 'request'), type: resolved(type), meta, payload };
+          next(newAction);
+        })
+        .catch((payload) => {
+          const meta = { isRequestActive: false, ...action.meta };
+          const newAction = { ...omit(action, 'request'), type: rejected(type), meta, payload };
+          next(newAction);
+        });
 
-        const promise = createRequest(options);
+      const nextAction = {
+        ...omit(action, 'request'),
+        meta: { isRequestActive: true, ...action.meta },
+      };
+      next(nextAction);
 
-        promise
-          .then((payload) => {
-            console.log({ payload });
-            const meta = { isRequestActive: false, ...action.meta };
-            const newAction = { ...omit(action, 'request'), type: resolved(type), meta, payload };
-            next(newAction);
-          })
-          .catch((payload) => {
-            const meta = { isRequestActive: false, ...action.meta };
-
-            if (options.graceful) {
-              console.log('What is going on');
-              recordClientError(new Error('Silenced: failed to fetch contentful'));
-
-              // const newAction = { ...omit(action, 'request'), type: resolved(type), meta };
-              // next(newAction);
-              return Promise.resolve(); // or better dispatch
-            }
-
-            const newAction = { ...omit(action, 'request'), type: rejected(type), meta, payload };
-            next(newAction);
-          });
-
-        const nextAction = {
-          ...omit(action, 'request'),
-          meta: { isRequestActive: true, ...action.meta },
-        };
-        next(nextAction);
-
-        return promise;
+      if (request.graceful) {
+        promise.catch((error) => {
+          getErrorHandler()?.(error);
+        });
       }
-    )
-  );
-};
+
+      return promise;
+    }
+  )
+);
