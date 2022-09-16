@@ -7,7 +7,7 @@
   "homepage": "https://nebenan.de/",
   "repository": "good-hood-gmbh/nebenan-redux-tools",
   "bugs": "https://github.com/good-hood-gmbh/nebenan-redux-tools/issues",
-  "version": "6.1.0-alpha.13",
+  "version": "6.2.0-beta.2",
   "files": [
     "lib/*.js",
     "lib/*/*.js"
