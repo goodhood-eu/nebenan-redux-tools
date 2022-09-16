@@ -30,7 +30,7 @@ export default (store) => (
           const newAction = { ...omit(action, 'request'), type: rejected(type), meta, payload };
           next(newAction);
 
-          getErrorHandler()?.(payload, request);
+          getErrorHandler()?.(payload, options);
 
           if (!request.graceful) return Promise.reject(payload);
         },
