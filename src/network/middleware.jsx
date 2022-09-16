@@ -17,31 +17,30 @@ export default (store) => (
       const options = omit(request, 'shouldRequest');
       if (!options.token) options.token = state.token;
 
-      const promise = createRequest(options);
-
-      promise
-        .then((payload) => {
+      const promise = createRequest(options).then(
+        (payload) => {
           const meta = { isRequestActive: false, ...action.meta };
           const newAction = { ...omit(action, 'request'), type: resolved(type), meta, payload };
           next(newAction);
-        })
-        .catch((payload) => {
+
+          return Promise.resolve(payload);
+        },
+        (payload) => {
           const meta = { isRequestActive: false, ...action.meta };
           const newAction = { ...omit(action, 'request'), type: rejected(type), meta, payload };
           next(newAction);
-        });
+
+          getErrorHandler()?.(payload, request);
+
+          if (!request.graceful) return Promise.reject(payload);
+        },
+      );
 
       const nextAction = {
         ...omit(action, 'request'),
         meta: { isRequestActive: true, ...action.meta },
       };
       next(nextAction);
-
-      if (request.graceful) {
-        promise.catch((error) => {
-          getErrorHandler()?.(error);
-        });
-      }
 
       return promise;
     }
