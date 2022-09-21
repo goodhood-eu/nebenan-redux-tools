@@ -97,5 +97,5 @@ export default (options) => {
     throw networkError;
   };
 
-  return axios(requestConfig).then(pipeResponse).catch(rethrowError);
+  return axios(requestConfig).then(pipeResponse, rethrowError);
 };
