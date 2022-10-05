@@ -16,7 +16,15 @@ export const middleware = () => (
       const newAction = { ...cleanAction };
       next(newAction);
 
-      promise
+      // prevent unnecessary calls
+      // handle shouldRequest somehow, state is missing?
+      // eslint-disable-next-line max-len
+      // if (promise.shouldFire && !promise.shouldFire(action.payload)) return Promise.resolve(null);
+
+      console.log('promise middleware ');
+      console.log(promise);
+
+      promise.requestPromise
         .then((payload) => {
           const resolvedAction = { ...cleanAction, type: resolved(type), payload };
           next(resolvedAction);

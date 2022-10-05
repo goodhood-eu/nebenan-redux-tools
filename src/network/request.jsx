@@ -97,5 +97,10 @@ export default (options) => {
     throw networkError;
   };
 
+  if (requestConfig.url?.includes('contentfull_proxy')) {
+    console.log('requesting from contentful via axios with requestConfig: ');
+    console.log(requestConfig);
+  }
+
   return axios(requestConfig).then(pipeResponse, rethrowError);
 };
