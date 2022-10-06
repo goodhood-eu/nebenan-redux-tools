@@ -6,23 +6,18 @@ export const REJECTED = 'REJECTED';
 export const resolved = (type) => `${type}_${RESOLVED}`;
 export const rejected = (type) => `${type}_${REJECTED}`;
 
-export const middleware = () => (
+export const middleware = (store) => (
   (next) => (
     (action) => {
       if (!action.promise) return next(action);
       const { promise, type } = action;
-      const cleanAction = omit(action, 'promise');
+      const state = store.getState();
+      // prevent unnecessary calls
+      if (promise.shouldRequest && !promise.shouldRequest(state)) return Promise.resolve(null);
 
+      const cleanAction = omit(action, 'promise');
       const newAction = { ...cleanAction };
       next(newAction);
-
-      // prevent unnecessary calls
-      // handle shouldRequest somehow, state is missing?
-      // eslint-disable-next-line max-len
-      // if (promise.shouldFire && !promise.shouldFire(action.payload)) return Promise.resolve(null);
-
-      console.log('promise middleware ');
-      console.log(promise);
 
       promise.requestPromise
         .then((payload) => {
