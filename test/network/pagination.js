@@ -11,6 +11,7 @@ const {
   PAGINATION_DEFAULTS,
   assignPaginationDefaults,
   paginationGenerator,
+  paginationGenerators,
   buildPaginationQuery,
 } = require('../../lib/network/pagination');
 
@@ -91,6 +92,71 @@ describe('network/pagination', () => {
       assert.equal(state.total, null, 'total kept previous value');
       assert.isFalse(state.isFetching, 'Fetching set');
       assert.isTrue(state.isFailed, 'isFailed set');
+    });
+  });
+
+  describe('paginationGenerators', () => {
+    it('collects updates for multiple generators in one update', () => {
+      const actions = {
+        FETCH_MAIN_LIST: 'FETCH_LIST',
+        FETCH_CUSTOM_LIST: 'FETCH_CUSTOM_LIST',
+      };
+
+      const pagination = paginationGenerators({
+        mainList: actions.FETCH_MAIN_LIST,
+        customList: actions.FETCH_CUSTOM_LIST,
+      });
+
+      assert.deepEqual(
+        pagination(
+          {
+            mainList: {},
+            customList: {},
+          },
+          { type: 'UNKOWN_ACTION', payload: { } },
+        ),
+        {
+          mainList: {
+            collection: [],
+            currentPage: 0,
+            lastFetched: 0,
+            total: null,
+          },
+
+          customList: {
+            collection: [],
+            currentPage: 0,
+            lastFetched: 0,
+            total: null,
+          },
+        },
+        'returns initialization updates for all lists',
+      );
+
+      assert.deepEqual(
+        pagination(
+          {
+            mainList: {
+              collection: [],
+              currentPage: 0,
+              lastFetched: 0,
+              total: null,
+            },
+
+            customList: {
+              collection: [],
+              currentPage: 0,
+              lastFetched: 0,
+              total: null,
+            },
+          },
+          { type: rejected(actions.FETCH_MAIN_LIST), payload: { total_count: 123 } },
+        ),
+        {
+          mainList: { isFetching: false, currentPage: 0, isFailed: true },
+        },
+        'returns update for mainList',
+      );
     });
   });
 

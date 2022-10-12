@@ -1,4 +1,5 @@
 import defaults from 'lodash/defaults';
+import { mapValues } from 'lodash';
 import { has } from '../utils';
 import { resolved, rejected } from './types';
 
@@ -45,6 +46,19 @@ export const paginationGenerator = (type) => (
     return update;
   }
 );
+
+export const paginationGenerators = (typesByStateKey) => {
+  const updaters = mapValues(typesByStateKey, (type) => paginationGenerator(type));
+
+  return (state = {}, action) => (
+    Object.keys(updaters).reduce((updates, stateKey) => {
+      const update = updaters[stateKey](state[stateKey], action);
+      if (!update) return updates;
+
+      return { ...updates, [stateKey]: update };
+    }, {})
+  );
+};
 
 export const assignPaginationDefaults = (state) => ({ ...state, ...getPaginationDefaults() });
 
