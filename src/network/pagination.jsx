@@ -1,4 +1,5 @@
 import defaults from 'lodash/defaults';
+import mapValues from 'lodash/mapValues';
 import { has } from '../utils';
 import { resolved, rejected } from './types';
 
@@ -16,6 +17,10 @@ export const getPaginationDefaults = () => ({
   collection: [],
 });
 
+/**
+ * Provides updates for a given type and state to handle list loading, successful fetch and
+ * failed fetch.
+ */
 export const paginationGenerator = (type) => (
   (state = {}, action) => {
     let update = null;
@@ -45,6 +50,22 @@ export const paginationGenerator = (type) => (
     return update;
   }
 );
+
+/**
+ * Same thing as `paginationGenerator` but supports multiple lists.
+ */
+export const paginationGenerators = (typesByStateKey) => {
+  const updaters = mapValues(typesByStateKey, (type) => paginationGenerator(type));
+
+  return (state = {}, action) => (
+    Object.keys(updaters).reduce((updates, stateKey) => {
+      const update = updaters[stateKey](state[stateKey], action);
+      if (!update) return updates;
+
+      return { ...updates, [stateKey]: update };
+    }, {})
+  );
+};
 
 export const assignPaginationDefaults = (state) => ({ ...state, ...getPaginationDefaults() });
 
