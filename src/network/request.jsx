@@ -57,7 +57,17 @@ const getRequestConfig = (options = {}) => {
   if (options.query) config.params = options.query;
   if (options.payload) config.data = options.payload;
 
-  if (options.getAbortCallback) config.cancelToken = new CancelToken(options.getAbortCallback);
+  if (options.signal) {
+    config.signal = options.signal;
+  } else if (options.getAbortCallback) {
+    const controller = new AbortController();
+
+    options.getAbortCallback(() => {
+      controller.abort();
+    });
+
+    config.signal = controller.signal;
+  }
 
   if (options.type === 'query') {
     config.method = 'get';
