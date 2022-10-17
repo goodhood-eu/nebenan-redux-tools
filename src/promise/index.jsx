@@ -10,11 +10,11 @@ export const middleware = (store) => (
   (next) => (
     (action) => {
       if (!action.promise) return next(action);
-      const { promise, type } = action;
+      const { promise: options, type } = action;
       const state = store.getState();
 
       // prevent unnecessary calls
-      if (promise.shouldRequest && !promise.shouldRequest(state)) {
+      if (!options.shouldRequest?.(state)) {
         return Promise.resolve(null);
       }
 
@@ -22,24 +22,18 @@ export const middleware = (store) => (
       const newAction = { ...cleanAction };
       next(newAction);
 
-      promise.promiseRequest
+      let promise = options.getPromise?.();
+      // legacy: options can be a raw promise
+      if (!promise) promise = options;
+
+      promise
         .then((payload) => {
           const resolvedAction = { ...cleanAction, type: resolved(type), payload };
-
-          // prevent unnecessary state updates
-          if (promise.shouldFire && !promise.shouldFire(payload)) {
-            throw new Error(payload);
-          }
-
           next(resolvedAction);
-        })
-        .catch((payload) => {
+        }, (payload) => {
           const rejectedAction = { ...cleanAction, type: rejected(type), payload };
           next(rejectedAction);
         });
-
-      // trigger the request
-      promise.promiseResolve();
 
       return promise;
     }
