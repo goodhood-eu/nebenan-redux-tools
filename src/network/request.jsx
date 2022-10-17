@@ -59,7 +59,7 @@ const getRequestConfig = (options = {}) => {
 
   if (options.signal) {
     config.signal = options.signal;
-  } else if (options.getAbortCallback) {
+  } else if (options.getAbortCallback) { // TODO: deprecate getAbortCallback in next major release
     const controller = new AbortController();
 
     options.getAbortCallback(() => {
