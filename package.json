@@ -7,7 +7,7 @@
   "homepage": "https://nebenan.de/",
   "repository": "good-hood-gmbh/nebenan-redux-tools",
   "bugs": "https://github.com/good-hood-gmbh/nebenan-redux-tools/issues",
-  "version": "6.2.0",
+  "version": "6.3.0",
   "files": [
     "lib/*.js",
     "lib/*/*.js"
@@ -42,7 +42,7 @@
     "sinon": "^13.0.2"
   },
   "dependencies": {
-    "axios": "^0.26.1",
+    "axios": "^0.22.0",
     "escape-string-regexp-browser": "^1.1.0",
     "js-cookie": "^3.0.1",
     "local-storage-adapter": "^2.0.0",

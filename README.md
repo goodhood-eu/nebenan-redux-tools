@@ -232,26 +232,24 @@ dispatch({
 })
 ```
 
-## Abort Callback
+## Aborting
 
-Allows to cancel running requests. You receive the cancel function by providing `getAbortCallback` in request options.
+Allows to cancel running requests. Just pass in a [AbortSignal](https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal).
 
 ```js
-let cancelRequest;
+const controller = new AbortController();
 
 dispatch({
   type: "some-type",
   request: {
     url: "/some/endpoint",
-    getAbortCallback: (callback) => {
-      cancelRequest = callback;
-    }
+    signal: controller.signal,
   }
 })
 
 
 // later in app
-cancelRequest();
+controller.abort();
 
 ```
 
