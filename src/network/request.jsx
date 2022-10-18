@@ -1,9 +1,9 @@
-import axios, { CancelToken } from 'axios';
+import axios from 'axios';
 import { stringify } from 'qs';
 import { invoke } from '../utils';
 
 import { buildPaginationQuery } from './pagination';
-import { getBaseUrl, getTrustedDomainRegex, getGlobalHooks, getLocaleHeader } from './configuration';
+import { getBaseUrl, getGlobalHooks, getLocaleHeader, getTrustedDomainRegex } from './configuration';
 import { STATUS_CODE_NO_RESPONSE, STATUS_CODE_REQUEST_FAILED } from './constants';
 
 const EXTERNAL_URL_PREFIX = /^https?:\/\//;
