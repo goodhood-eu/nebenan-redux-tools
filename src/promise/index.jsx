@@ -24,6 +24,7 @@ export const middleware = (store) => (
 
       let promise = options.getPromise?.();
       // legacy: options can be a raw promise
+      // TODO: remove in next major release
       if (!promise) promise = options;
 
       promise
