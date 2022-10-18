@@ -25,11 +25,13 @@ export const middleware = (store) => (
       // TODO: remove in next major release
       if (!promise) promise = options;
 
-      promise
+      promise = promise
         .then((payload) => {
           next({ ...cleanAction, type: resolved(action.type), payload });
         }, (payload) => {
           next({ ...cleanAction, type: rejected(action.type), payload });
+
+          if (!options.graceful) return Promise.reject(payload);
         });
 
       return promise;

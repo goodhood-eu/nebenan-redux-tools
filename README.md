@@ -77,6 +77,9 @@ dispatch({
   type: types.GET_USERS,
   promise: {
     getPromise: () => getUsersFromStorageAsync(),
+    
+    // Ensures the returned promise by the dispatched action to resolve even if the provided promise rejected
+    // graceful: true
   }
 })
 ```
