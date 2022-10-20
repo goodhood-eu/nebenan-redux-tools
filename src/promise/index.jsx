@@ -1,3 +1,5 @@
+import { getErrorHandler } from './configuration';
+
 export const RESOLVED = 'RESOLVED';
 export const REJECTED = 'REJECTED';
 
@@ -13,7 +15,7 @@ export const middleware = (store) => (
       const state = store.getState();
 
       // prevent unnecessary calls
-      if (!options.shouldExecute?.(state)) {
+      if (options.shouldExecute && !options.shouldExecute(state)) {
         return Promise.resolve(null);
       }
 
@@ -30,6 +32,8 @@ export const middleware = (store) => (
           next({ ...cleanAction, type: resolved(action.type), payload });
         }, (payload) => {
           next({ ...cleanAction, type: rejected(action.type), payload });
+
+          getErrorHandler()?.(payload, action);
 
           if (!options.graceful) return Promise.reject(payload);
         });
