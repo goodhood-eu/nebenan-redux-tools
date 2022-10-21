@@ -1,5 +1,7 @@
 import { getErrorHandler } from './configuration';
 
+export { configurePromise } from './configuration';
+
 export const RESOLVED = 'RESOLVED';
 export const REJECTED = 'REJECTED';
 
