@@ -11,7 +11,7 @@ A set of redux helpers.
   - [API Token](#api-token)
   - [X-Translations-Lang Header](#x-translations-lang-header)
   - [Should Request](#should-request)
-  - [Abort Callback](#abort-callback)
+  - [Abort Callback](#aborting)
   - [Request Types](#request-types)
   - [Pagination](#pagination)
   - [Mock Responses](#mock-response)
