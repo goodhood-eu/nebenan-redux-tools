@@ -70,12 +70,17 @@ export default createFromState
 ```
   
 # Promise Middleware
-The promise middleware gets triggered by dispatching actions with `promise` in payload. The middleware will dispatch resolved or rejected actions when the promise is fulfilled.
+The promise middleware gets triggered by dispatching actions with `promise` key in payload. The middleware will dispatch resolved or rejected actions when the promise is fulfilled.
 
 ```js
 dispatch({
   type: types.GET_USERS,
-  promise: getUsersFromStorageAsync()
+  promise: {
+    getPromise: () => getUsersFromStorageAsync(),
+    
+    // Ensures the returned promise by the dispatched action to resolve even if the provided promise rejected
+    // graceful: true
+  }
 })
 ```
 
@@ -102,6 +107,21 @@ export default (state = getDefaultState(), action) => {
     }
   }
 } 
+```
+
+
+## Should Execute
+
+Prevents unnecessary promise executions by checking state beforehand. Dispatches resolved action on prevented execution.
+
+```js
+dispatch({
+  type: types.GET_USERS,
+  promise: {
+    getPromise: () => getUsersFromStorageAsync(),
+    shouldExecute: (state) => !state.isFetched,
+  }
+})
 ```
 
 # Network Middleware
