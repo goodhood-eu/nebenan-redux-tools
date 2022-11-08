@@ -11,7 +11,7 @@ A set of redux helpers.
   - [API Token](#api-token)
   - [X-Translations-Lang Header](#x-translations-lang-header)
   - [Should Request](#should-request)
-  - [Abort Callback](#abort-callback)
+  - [Abort Callback](#aborting)
   - [Request Types](#request-types)
   - [Pagination](#pagination)
   - [Mock Responses](#mock-response)
@@ -70,12 +70,17 @@ export default createFromState
 ```
   
 # Promise Middleware
-The promise middleware gets triggered by dispatching actions with `promise` in payload. The middleware will dispatch resolved or rejected actions when the promise is fulfilled.
+The promise middleware gets triggered by dispatching actions with `promise` key in payload. The middleware will dispatch resolved or rejected actions when the promise is fulfilled.
 
 ```js
 dispatch({
   type: types.GET_USERS,
-  promise: getUsersFromStorageAsync()
+  promise: {
+    getPromise: () => getUsersFromStorageAsync(),
+    
+    // Ensures the returned promise by the dispatched action to resolve even if the provided promise rejected
+    // graceful: true
+  }
 })
 ```
 
@@ -102,6 +107,21 @@ export default (state = getDefaultState(), action) => {
     }
   }
 } 
+```
+
+
+## Should Execute
+
+Prevents unnecessary promise executions by checking state beforehand. Dispatches resolved action on prevented execution.
+
+```js
+dispatch({
+  type: types.GET_USERS,
+  promise: {
+    getPromise: () => getUsersFromStorageAsync(),
+    shouldExecute: (state) => !state.isFetched,
+  }
+})
 ```
 
 # Network Middleware
@@ -215,26 +235,24 @@ dispatch({
 })
 ```
 
-## Abort Callback
+## Aborting
 
-Allows to cancel running requests. You receive the cancel function by providing `getAbortCallback` in request options.
+Allows to cancel running requests. Just pass in a [AbortSignal](https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal).
 
 ```js
-let cancelRequest;
+const controller = new AbortController();
 
 dispatch({
   type: "some-type",
   request: {
     url: "/some/endpoint",
-    getAbortCallback: (callback) => {
-      cancelRequest = callback;
-    }
+    signal: controller.signal,
   }
 })
 
 
 // later in app
-cancelRequest();
+controller.abort();
 
 ```
 

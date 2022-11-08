@@ -1,9 +1,9 @@
-import axios, { CancelToken } from 'axios';
+import axios from 'axios';
 import { stringify } from 'qs';
 import { invoke } from '../utils';
 
 import { buildPaginationQuery } from './pagination';
-import { getBaseUrl, getTrustedDomainRegex, getGlobalHooks, getLocaleHeader } from './configuration';
+import { getBaseUrl, getGlobalHooks, getLocaleHeader, getTrustedDomainRegex } from './configuration';
 import { STATUS_CODE_NO_RESPONSE, STATUS_CODE_REQUEST_FAILED } from './constants';
 
 const EXTERNAL_URL_PREFIX = /^https?:\/\//;
@@ -57,7 +57,17 @@ const getRequestConfig = (options = {}) => {
   if (options.query) config.params = options.query;
   if (options.payload) config.data = options.payload;
 
-  if (options.getAbortCallback) config.cancelToken = new CancelToken(options.getAbortCallback);
+  if (options.signal) {
+    config.signal = options.signal;
+  } else if (options.getAbortCallback) { // TODO: deprecate getAbortCallback in next major release
+    const controller = new AbortController();
+
+    options.getAbortCallback(() => {
+      controller.abort();
+    });
+
+    config.signal = controller.signal;
+  }
 
   if (options.type === 'query') {
     config.method = 'get';
