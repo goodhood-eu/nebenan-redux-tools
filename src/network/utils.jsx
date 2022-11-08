@@ -14,3 +14,5 @@ export const getTotalCount = (collection, result) => {
   const resultLength = result ? result.length : 0;
   return collection.length + (resultLength * 2);
 };
+
+export const isNetworkError = (error) => error?.statusCode !== undefined;
