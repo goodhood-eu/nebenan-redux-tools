@@ -1,4 +1,5 @@
 import updeep from 'updeep';
+import { Reducer } from 'redux';
 import { persistExperiments } from './store';
 
 export const types = {
@@ -7,15 +8,16 @@ export const types = {
 };
 
 export const actions = {
-  setExperiment(name, value) {
+  setExperiment(name: string, value: string) {
     return { type: types.EXPERIMENT_SET, name, value };
   },
-  setExperiments(payload) {
+  setExperiments(payload: Record<string, string>) {
     return { type: types.EXPERIMENTS_SET, payload };
   },
 };
 
-export const reducer = (state = {}, action) => {
+// eslint-disable-next-line @typescript-eslint/default-param-last
+export const reducer: Reducer = (state = {}, action) => {
   switch (action.type) {
     case types.EXPERIMENT_SET: {
       const { name, value } = action;
