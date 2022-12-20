@@ -1,3 +1,5 @@
+import { Middleware } from 'redux';
+import { AxiosResponse } from 'axios';
 import { getErrorHandler } from './configuration';
 
 export { configurePromise } from './configuration';
@@ -5,10 +7,10 @@ export { configurePromise } from './configuration';
 export const RESOLVED = 'RESOLVED';
 export const REJECTED = 'REJECTED';
 
-export const resolved = (type) => `${type}_${RESOLVED}`;
-export const rejected = (type) => `${type}_${REJECTED}`;
+export const resolved = (type: string): string => `${type}_${RESOLVED}`;
+export const rejected = (type: string): string => `${type}_${REJECTED}`;
 
-export const middleware = (store) => (
+export const middleware: Middleware = (store) => (
   (next) => (
     (action) => {
       if (!action.promise) return next(action);
@@ -30,9 +32,9 @@ export const middleware = (store) => (
       if (!promise) promise = options;
 
       return promise
-        .then((payload) => {
+        .then((payload: AxiosResponse) => {
           next({ ...cleanAction, type: resolved(action.type), payload });
-        }, (payload) => {
+        }, (payload: AxiosResponse) => {
           next({ ...cleanAction, type: rejected(action.type), payload });
 
           getErrorHandler()?.(payload, action);
