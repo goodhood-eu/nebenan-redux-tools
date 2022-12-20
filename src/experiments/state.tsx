@@ -16,7 +16,6 @@ export const actions = {
   },
 };
 
-// eslint-disable-next-line @typescript-eslint/default-param-last
 export const reducer: Reducer = (state = {}, action) => {
   switch (action.type) {
     case types.EXPERIMENT_SET: {

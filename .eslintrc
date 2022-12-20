@@ -43,7 +43,8 @@
             "selector": "variable",
             "format": ["camelCase", "snake_case", "UPPER_CASE"]
           }
-        ]
+        ],
+        "@typescript-eslint/default-param-last": [0]
       }
     }
   ]

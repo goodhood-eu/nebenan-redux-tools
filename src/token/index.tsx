@@ -1,10 +1,17 @@
-import Cookies from 'js-cookie';
+import Cookies, { CookieAttributes } from 'js-cookie';
+import { AnyAction, Reducer } from 'redux';
 
-let keyName;
-let keyExpires;
-let debugEnabled;
+let keyName: string;
+let keyExpires: CookieAttributes['expires'];
+let debugEnabled: boolean;
 
-export const configureToken = ({ name, expires, debug }) => {
+export type ConfigureTokenArguments = {
+  name: string;
+  expires: CookieAttributes['expires'];
+  debug: boolean;
+};
+
+export const configureToken = ({ name, expires, debug }: ConfigureTokenArguments): void => {
   keyName = name;
   keyExpires = expires;
   debugEnabled = debug;
@@ -15,18 +22,18 @@ export const types = {
 };
 
 export const actions = {
-  setToken(payload) {
+  setToken(payload: Record<string, unknown>): AnyAction {
     return { type: types.TOKEN_SET, payload };
   },
 };
 
-export const restoreToken = () => Cookies.get(keyName);
-export const persistToken = (token) => {
+export const restoreToken = (): string | undefined => Cookies.get(keyName);
+export const persistToken = (token: string): void => {
   // Nothing to do here
   if (!token && !Cookies.get(keyName)) return;
 
   if (token) {
-    const options = {
+    const options: CookieAttributes = {
       expires: keyExpires,
       secure: !debugEnabled,
       SameSite: 'Lax',
@@ -38,7 +45,7 @@ export const persistToken = (token) => {
   }
 };
 
-export const reducer = (state = null, action) => {
+export const reducer: Reducer = (state = null, action) => {
   switch (action.type) {
     case types.TOKEN_SET: {
       if (typeof window !== 'undefined') persistToken(action.payload);
