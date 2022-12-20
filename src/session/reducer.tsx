@@ -1,9 +1,9 @@
 import updeep from 'updeep';
+import { Reducer } from 'redux';
 import * as types from './types';
 import { persistSession } from './utils';
 
-
-export default (state = {}, action) => {
+const reducer: Reducer = (state = {}, action) => {
   switch (action.type) {
     case types.SESSION_SET: {
       if (action.payload === null) return {};
@@ -17,3 +17,5 @@ export default (state = {}, action) => {
     }
   }
 };
+
+export default reducer;
