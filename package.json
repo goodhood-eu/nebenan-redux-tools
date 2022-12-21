@@ -19,7 +19,7 @@
     "check": "npm test && npm run lint && lint:typescript && echo \"\\033[0;32mReady to publish\\033[0m\"",
     "clean": "rm -rf ./lib/ || exit 1",
     "compile": "NODE_ENV=production babel src --out-dir lib --copy-files",
-    "build": "npm run compile",
+    "build": "NODE_ENV=production rollup -c",
     "prepublishOnly": "npm run check && npm run clean && npm run build",
     "lint": "eslint --ext .es,.js ./",
     "lint:tofile": "eslint --ext .es,.js --no-color -o ./eslint-report.log ./",
