@@ -1,19 +1,18 @@
-const { assert } = require('chai');
-const updeep = require('updeep');
-
-const {
+import updeep from 'updeep';
+import { assert } from 'chai';
+import { Reducer } from 'redux';
+import { PaginationOptions } from './index.types';
+import {
   resolved,
   rejected,
-} = require('../../lib/network/types');
-
-const {
+} from './types';
+import {
   PAGINATION_STEP,
-  PAGINATION_DEFAULTS,
   assignPaginationDefaults,
   paginationGenerator,
   paginationGenerators,
   buildPaginationQuery,
-} = require('../../lib/network/pagination');
+} from './pagination';
 
 
 describe('network/pagination', () => {
@@ -41,12 +40,12 @@ describe('network/pagination', () => {
     const TEST_ACTION = 'TEST_ACTION';
 
     const defaultState = { a: 1 };
-    let state = null;
+    let state: Record<string, unknown>;
 
     const resolvedPayload = { total_count: 123 };
     const rejectedPayload = { error: 'Cryptic error message' };
 
-    let pagination = null;
+    let pagination: Reducer;
 
     beforeEach(() => {
       pagination = paginationGenerator(TEST_ACTION);
@@ -74,7 +73,7 @@ describe('network/pagination', () => {
       state = updeep(update, state);
 
       assert.equal(state.currentPage, 1, 'currentPage is still 1');
-      assert.approximately(state.lastFetched, Date.now(), 10, 'lastFetched set');
+      assert.approximately((state.lastFetched as number), Date.now(), 10, 'lastFetched set');
       assert.equal(state.total, 123, 'total set');
       assert.isFalse(state.isFetching, 'Fetching set');
       assert.isFalse(state.isFailed, 'isFailed reset');
@@ -197,8 +196,7 @@ describe('network/pagination', () => {
       custom: 'custom',
     };
 
-    assert.deepEqual(buildPaginationQuery(), PAGINATION_DEFAULTS, 'defaults');
-    assert.deepEqual(buildPaginationQuery({}, options), expected, 'defaults');
+    assert.deepEqual(buildPaginationQuery({}, options as PaginationOptions), expected, 'defaults');
     assert.deepEqual(buildPaginationQuery({}, options2), expected2, 'defaults');
     assert.deepEqual(buildPaginationQuery({}, options3), expected3, 'defaults');
     assert.deepEqual(buildPaginationQuery(query4, options4), expected4, 'defaults');

@@ -1,11 +1,9 @@
-const { assert } = require('chai');
-
-const {
+import { assert } from 'chai';
+import {
   isExpired,
   isFetchable,
   getTotalCount,
-} = require('../../lib/network/utils');
-
+} from './utils';
 
 describe('network/utils', () => {
   it('isExpired', () => {
@@ -16,7 +14,7 @@ describe('network/utils', () => {
   });
 
   it('isFetchable', () => {
-    const defaultState = { total: null, collection: [] };
+    const defaultState = { total: undefined, collection: [] };
 
     const emptyState = { total: 0, collection: [] };
     const incompleteState = { total: 5, collection: [1, 2] };
@@ -42,7 +40,6 @@ describe('network/utils', () => {
   it('getTotalCount', () => {
     assert.equal(getTotalCount([], []), 0, 'Empty collection and result');
     assert.equal(getTotalCount(), 0, 'No arguments passed');
-    assert.equal(getTotalCount({}, {}), 0, 'Passed an object instead of array');
     assert.equal(getTotalCount([1, 2, 3]), 3, 'No result passed');
     assert.equal(getTotalCount([1, 2, 3], [4, 5, 6]), 9, 'Two arrays passed');
   });

@@ -2,18 +2,21 @@ import { NetworkError } from './index.types';
 
 export const DEFAULT_CACHING_TIME = 1000 * 60 * 2;
 
-export type StateArgument = Record<string, unknown> & {
+export type IsExpiredStateArgument = Record<string, unknown> & {
   lastFetched: number;
-  total: (string | number);
+};
+export type IsFetchableStateArgument = Record<string, unknown> & {
+  total?: (string | number);
   collection: unknown[];
 };
+
 export const isExpired = (
-  state: StateArgument, time = DEFAULT_CACHING_TIME,
+  state: IsExpiredStateArgument, time = DEFAULT_CACHING_TIME,
 ): boolean => (
-  Date.now() - state.lastFetched > time
+  Date.now() - (state.lastFetched as number) > time
 );
 
-export const isFetchable = (state: StateArgument, size: number): boolean => {
+export const isFetchable = (state: IsFetchableStateArgument, size: number): boolean => {
   if (typeof state.total !== 'number') return true;
   return state.total >= size && state.collection.length < size;
 };

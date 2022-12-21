@@ -1,11 +1,10 @@
-const { assert } = require('chai');
-
-const {
+import { assert } from 'chai';
+import {
   configureNetwork,
   getBaseUrl,
   getTrustedDomainRegex,
   getGlobalHooks,
-} = require('../../lib/network/configuration');
+} from './configuration';
 
 const API = 'awesomeapi';
 const DOMAIN = 'wowzor.com';
