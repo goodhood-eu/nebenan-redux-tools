@@ -1,6 +1,7 @@
 import { useSelector, shallowEqual } from 'react-redux';
+import { UnknownCallback } from '../network/index.types';
 
-export const invoke = (fn: unknown, ...args: unknown[]): unknown => {
+export const invoke = (fn: UnknownCallback, ...args: unknown[]): unknown => {
   if (typeof fn === 'function') return fn(...args);
 };
 

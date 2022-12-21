@@ -1,8 +1,14 @@
+import { Reducer } from 'redux';
+
 const isServerEnv = typeof window === 'undefined';
 
-const getDefaultState = () => ({ activeRequestsCount: 0, isNetworkActive: false });
+export type DefaultState = {
+  activeRequestsCount: 0;
+  isNetworkActive: false;
+};
+const getDefaultState = (): DefaultState => ({ activeRequestsCount: 0, isNetworkActive: false });
 
-export default (state = getDefaultState(), action) => {
+const reducer: Reducer = (state = getDefaultState(), action) => {
   if (isServerEnv || !action.meta || typeof action.meta.isRequestActive !== 'boolean') return state;
 
   const diff = action.meta.isRequestActive ? 1 : -1;
@@ -12,3 +18,5 @@ export default (state = getDefaultState(), action) => {
 
   return { activeRequestsCount, isNetworkActive };
 };
+
+export default reducer;

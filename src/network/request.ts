@@ -1,22 +1,44 @@
-import axios from 'axios';
+import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { stringify } from 'qs';
-import { invoke } from '../utils';
 
 import { buildPaginationQuery } from './pagination';
 import { getBaseUrl, getGlobalHooks, getLocaleHeader, getTrustedDomainRegex } from './configuration';
 import { STATUS_CODE_NO_RESPONSE, STATUS_CODE_REQUEST_FAILED } from './constants';
+import { invoke } from '../utils';
+import {
+  NetworkError,
+  PaginationOptions,
+  RequestConfig,
+  RequestOptions,
+  RequestQuery,
+  RequestResponse,
+  RequestType,
+} from './index.types';
 
 const EXTERNAL_URL_PREFIX = /^https?:\/\//;
 
-export const isExternalUrl = (url) => EXTERNAL_URL_PREFIX.test(url);
-export const isTrustworthyUrl = (url) => {
+export const isExternalUrl = (url: string): boolean => EXTERNAL_URL_PREFIX.test(url);
+export const isTrustworthyUrl = (url: string): boolean => {
   const regex = getTrustedDomainRegex();
   return regex && regex.test(url);
 };
 
-const paramsSerializer = (params) => stringify(params, { indices: false });
+const paramsSerializer = (
+  params: Record<string, unknown>,
+): string => stringify(params, { indices: false });
 
-const getNetworkError = ({ response, request, message }) => {
+export type NetworkErrorResponseObject = {
+  data: Record<string, unknown>;
+  status: string;
+};
+export type GetNetworkErrorArguments = {
+  response: NetworkErrorResponseObject,
+  request: RequestType,
+  message: string,
+};
+const getNetworkError = (
+  { response, request, message }: GetNetworkErrorArguments,
+): NetworkError => {
   if (response) {
     return {
       ...response.data,
@@ -39,15 +61,15 @@ const getNetworkError = ({ response, request, message }) => {
   };
 };
 
-const getRequestConfig = (options = {}) => {
-  const isExternal = isExternalUrl(options.url);
-  const isTrustworthy = isTrustworthyUrl(options.url);
+const getRequestConfig = <P>(options: RequestOptions<P> = {}): RequestConfig => {
+  const isExternal = isExternalUrl(options.url as string);
+  const isTrustworthy = isTrustworthyUrl(options.url as string);
   const locale = options.locale || getLocaleHeader();
 
-  let url = options.url;
+  let url = options.url as string;
   if (!isExternal) url = `${getBaseUrl()}${url}`;
 
-  const config = {
+  const config: RequestConfig = {
     url,
     paramsSerializer,
     headers: { Accept: 'application/json' },
@@ -71,7 +93,9 @@ const getRequestConfig = (options = {}) => {
 
   if (options.type === 'query') {
     config.method = 'get';
-    config.params = buildPaginationQuery(options.query, options.pagination);
+    config.params = buildPaginationQuery(
+      (options.query as RequestQuery), (options.pagination as PaginationOptions),
+    );
   }
 
   if (!isExternal || isTrustworthy) {
@@ -86,7 +110,9 @@ const getRequestConfig = (options = {}) => {
   return config;
 };
 
-export default (options) => {
+export default <T extends Record<string, unknown>, P>(
+  options: RequestOptions<P>,
+): Promise<RequestResponse<T>> => {
   const { requestHook, responseHook } = getGlobalHooks();
   const requestConfig = getRequestConfig(options);
 
@@ -94,18 +120,20 @@ export default (options) => {
   invoke(options.customize, requestConfig, options);
   invoke(requestHook, requestConfig, options);
 
-  const pipeResponse = (response) => {
+  const pipeResponse = (response: AxiosResponse<T>) => {
     const body = (response && response.data) ? response.data : {};
     invoke(responseHook, body, requestConfig, options);
     return body;
   };
 
-  const rethrowError = (error) => {
+  const rethrowError = (error: GetNetworkErrorArguments) => {
     const networkError = getNetworkError(error);
 
     invoke(responseHook, networkError, requestConfig, options);
+    // eslint-disable-next-line @typescript-eslint/no-throw-literal
     throw networkError;
   };
 
-  return axios(requestConfig).then(pipeResponse, rethrowError);
+  return axios(requestConfig as AxiosRequestConfig)
+    .then(pipeResponse, rethrowError) as Promise<RequestResponse<T>>;
 };

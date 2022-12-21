@@ -1,7 +1,18 @@
 import defaults from 'lodash/defaults';
 import mapValues from 'lodash/mapValues';
-import { has } from '../utils';
+import { Reducer } from 'redux';
 import { resolved, rejected } from './types';
+import { PaginationOptions, RequestQuery } from './index.types';
+import { has } from '../utils';
+
+export type ResolvedUpdateObject = null | {
+  isFetching?: boolean;
+  isFailed?: boolean;
+  total?: null | number;
+  currentPage?: number;
+  collection?: unknown[];
+  lastFetched?: number;
+};
 
 export const PAGINATION_STEP = 20;
 
@@ -10,7 +21,7 @@ export const PAGINATION_DEFAULTS = {
   page: 1,
 };
 
-export const getPaginationDefaults = () => ({
+export const getPaginationDefaults = (): ResolvedUpdateObject => ({
   currentPage: 0,
   lastFetched: 0,
   total: null,
@@ -21,9 +32,9 @@ export const getPaginationDefaults = () => ({
  * Provides updates for a given type and state to handle list loading, successful fetch and
  * failed fetch.
  */
-export const paginationGenerator = (type) => (
+export const paginationGenerator = (type: string): Reducer => (
   (state = {}, action) => {
-    let update = null;
+    let update: ResolvedUpdateObject = null;
 
     if (typeof state.currentPage !== 'number') update = getPaginationDefaults();
 
@@ -54,7 +65,7 @@ export const paginationGenerator = (type) => (
 /**
  * Same thing as `paginationGenerator` but supports multiple lists.
  */
-export const paginationGenerators = (typesByStateKey) => {
+export const paginationGenerators = (typesByStateKey: Record<string, string>): Reducer => {
   const updaters = mapValues(typesByStateKey, (type) => paginationGenerator(type));
 
   return (state = {}, action) => (
@@ -67,13 +78,17 @@ export const paginationGenerators = (typesByStateKey) => {
   );
 };
 
-export const assignPaginationDefaults = (state) => ({ ...state, ...getPaginationDefaults() });
+export const assignPaginationDefaults = (
+  state: Record<string, unknown>,
+): Record<string, unknown> => ({ ...state, ...getPaginationDefaults() });
 
-export const buildPaginationQuery = (query, options) => {
+export const buildPaginationQuery = (
+  query: RequestQuery, options: PaginationOptions,
+): Record<string, unknown> => {
   if (options && (has(options, 'last') || has(options, 'first'))) {
     const { last, first } = options;
 
-    const pagination = {
+    const pagination: PaginationOptions = {
       per_page: options.per_page || PAGINATION_DEFAULTS.per_page,
     };
 

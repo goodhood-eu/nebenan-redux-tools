@@ -1,10 +1,11 @@
 import omit from 'lodash/omit';
 
+import { AnyAction, Middleware } from 'redux';
 import createRequest from './request';
-import { getErrorHandler } from './configuration';
 import { resolved, rejected } from './types';
+import { getErrorHandler } from './configuration';
 
-export default (store) => (
+const middleware: Middleware = (store) => (
   (next) => (
     (action) => {
       if (!action.request) return next(action);
@@ -40,9 +41,11 @@ export default (store) => (
         ...omit(action, 'request'),
         meta: { isRequestActive: true, ...action.meta },
       };
-      next(nextAction);
+      next(nextAction as unknown as AnyAction);
 
       return promise;
     }
   )
 );
+
+export default middleware;
