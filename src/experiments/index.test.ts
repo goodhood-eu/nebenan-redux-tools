@@ -1,8 +1,5 @@
-const { assert } = require('chai');
-
-const {
-  updateExperiments,
-} = require('../../lib/experiments');
+import { assert } from 'chai';
+import { updateExperiments } from './index';
 
 describe('experiments', () => {
   describe('updateExperiments', () => {
@@ -27,7 +24,7 @@ describe('experiments', () => {
           { travel_fun: 2 },
         );
 
-        assert.isBelow(updated.travel_fun, 2);
+        assert.isBelow((updated.travel_fun as number), 2);
       });
     });
 

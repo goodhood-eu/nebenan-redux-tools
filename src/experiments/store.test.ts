@@ -1,8 +1,5 @@
-const { assert } = require('chai');
-
-const {
-  parseExperiments,
-} = require('../../lib/experiments/store');
+import { assert } from 'chai';
+import { parseExperiments } from './store';
 
 describe('experiments/store', () => {
   it('parseExperiments', () => {
@@ -13,7 +10,6 @@ describe('experiments/store', () => {
       b: 2,
     };
 
-    assert.isObject(parseExperiments(), 'returns object');
     assert.deepEqual(parseExperiments(string), expected, 'parsed correctly');
   });
 });

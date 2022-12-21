@@ -16,19 +16,21 @@ export const configureExperiments = ({ name, expires, debug }: ConfigureExperime
   debugEnabled = debug;
 };
 
-type ParsedObject = Record<string, (string | number)>;
-export const parseExperiments = (string: string): ParsedObject => {
-  const object = parse(string) as ParsedObject;
-  Object.keys(object).forEach((key) => { object[key] = parseInt(object[key] as string, 10); });
+export const parseExperiments = (string: string): Record<string, (string | number)> => {
+  const object = parse(string) as Record<string, (string | number)>;
+  Object.keys(object).forEach((key) => {
+    object[key] = parseInt(object[key] as string, 10);
+  });
+
   return object;
 };
 export const serializeExperiments = (object: Record<string, unknown>): string => stringify(object);
 
-export const restoreExperiments = (): ParsedObject => (
+export const restoreExperiments = (): Record<string, (string | number)> => (
   parseExperiments(Cookies.get(keyName) as string)
 );
 
-export const persistExperiments = (object: Record<string, unknown>) => {
+export const persistExperiments = (object: Record<string, (string | number)>) => {
   const value = serializeExperiments(object);
 
   // Nothing to do here
