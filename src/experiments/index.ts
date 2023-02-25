@@ -1,25 +1,27 @@
 import defaults from 'lodash/defaults';
+import { Experiments, RandomExperimentSetup } from './types';
 
 export const createVariation = (number: number): number => Date.now() % number;
 
-const createExperiments = (
-  state: Record<string, unknown>, hash: Record<string, number>,
-): Record<string, unknown> => (
+const createRandomExperiments = (
+  state: Experiments,
+  hash: RandomExperimentSetup,
+): Experiments => (
   Object.keys(hash).reduce((acc, key) => {
     acc[key] = typeof state[key] !== 'undefined' ? state[key] : createVariation(hash[key]);
     return acc;
-  }, {} as Record<string, unknown>)
+  }, {} as Experiments)
 );
 
 export const updateExperiments = (
-  current: Record<string, unknown>,
-  randomExperiments?: null | Record<string, number>,
-  otherExperiments?: Record<string, unknown>,
-  overrides?: Record<string, unknown>,
-): Record<string, unknown> => {
+  current: Experiments,
+  randomExperiments?: RandomExperimentSetup,
+  otherExperiments?: Experiments,
+  overrides?: Experiments,
+): Experiments => {
   let updated = { ...current };
 
-  if (randomExperiments) updated = createExperiments(current, randomExperiments);
+  if (randomExperiments) updated = createRandomExperiments(current, randomExperiments);
   if (otherExperiments) defaults(updated, otherExperiments);
   if (overrides) updated = { ...updated, ...overrides };
 

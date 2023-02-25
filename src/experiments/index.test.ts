@@ -33,7 +33,7 @@ describe('experiments', () => {
         assert.deepEqual(
           updateExperiments(
             { donations: 1 },
-            null,
+            undefined,
             { donations: 5 },
           ),
           { donations: 1 },
@@ -44,7 +44,7 @@ describe('experiments', () => {
         assert.deepEqual(
           updateExperiments(
             { },
-            null,
+            undefined,
             { donations: 5 },
           ),
           { donations: 5 },

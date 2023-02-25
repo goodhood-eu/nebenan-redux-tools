@@ -1,12 +1,12 @@
 import { useShallowEqualSelector } from '../utils';
+import { State } from './types';
 
-type ExperimentsStoreType = {
-  experiments: Record<string, unknown>
+type RootState = {
+  // Relies on the app mapping the reducer on the 'experiments' key
+  experiments: State,
 };
 
-const selectExperiments = (
-  { experiments }: { experiments: ExperimentsStoreType['experiments'] },
-): ExperimentsStoreType['experiments'] => experiments;
+const selectExperiments = ({ experiments }: RootState) => experiments;
 export const useExperiments = () => (
-  useShallowEqualSelector<ExperimentsStoreType>(selectExperiments)
+  useShallowEqualSelector<RootState>(selectExperiments)
 );

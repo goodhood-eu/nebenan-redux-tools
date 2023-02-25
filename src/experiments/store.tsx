@@ -1,5 +1,6 @@
 import Cookies, { CookieAttributes } from 'js-cookie';
 import { stringify, parse } from 'qs';
+import { Experiments } from './types';
 
 let keyName: string;
 let keyExpires: CookieAttributes['expires'];
@@ -16,21 +17,21 @@ export const configureExperiments = ({ name, expires, debug }: ConfigureExperime
   debugEnabled = debug;
 };
 
-export const parseExperiments = (string: string): Record<string, (string | number)> => {
-  const object = parse(string) as Record<string, (string | number)>;
+export const parseExperiments = (serialized: string): Experiments => {
+  const object = parse(serialized) as Experiments;
   Object.keys(object).forEach((key) => {
     object[key] = parseInt(object[key] as string, 10);
   });
 
   return object;
 };
-export const serializeExperiments = (object: Record<string, unknown>): string => stringify(object);
+export const serializeExperiments = (object: Experiments): string => stringify(object);
 
-export const restoreExperiments = (): Record<string, (string | number)> => (
+export const restoreExperiments = (): Experiments => (
   parseExperiments(Cookies.get(keyName) as string)
 );
 
-export const persistExperiments = (object: Record<string, (string | number)>) => {
+export const persistExperiments = (object: Experiments) => {
   const value = serializeExperiments(object);
 
   // Nothing to do here

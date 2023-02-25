@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "es2016",
     "module": "esnext",
-    "allowJs": true,
+    "allowJs": false,
     "sourceMap": true,
     "removeComments": true,
     "esModuleInterop": true,
@@ -17,10 +17,7 @@
     "declarationDir": "lib/types",
     "declarationMap": true,
     "outDir": "lib",
-    "jsx": "preserve",
-    "paths": {
-      "@/*": ["./*"],
-    }
+    "jsx": "preserve"
   },
   "include": ["src/**/*", "index.d.ts"],
   "exclude": [
