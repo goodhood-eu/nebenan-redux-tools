@@ -1,2 +1,3 @@
 export const STATUS_CODE_NO_RESPONSE = -1;
 export const STATUS_CODE_REQUEST_FAILED = -2;
+export const STATUS_CODE_REQUEST_CANCELLED = -3;
