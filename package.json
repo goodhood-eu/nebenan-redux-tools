@@ -1,11 +1,10 @@
 {
   "name": "nebenan-redux-tools",
   "description": "A set of redux helpers",
-  "author": "Nebenan.de <max@nebenan.de>",
+  "author": "Good Hood GmbH <tech@nebenan.de>",
   "license": "SEE LICENSE IN LICENSE FILE",
-  "readmeFilename": "README.md",
-  "homepage": "https://nebenan.de/",
-  "repository": "good-hood-gmbh/nebenan-redux-tools",
+  "homepage": "https://github.com/goodhood-eu/nebenan-redux-tools#readme",
+  "repository": "github:good-hood-gmbh/nebenan-redux-tools",
   "bugs": "https://github.com/good-hood-gmbh/nebenan-redux-tools/issues",
   "version": "6.6.0",
   "files": [
