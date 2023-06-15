@@ -20,7 +20,16 @@ export const isTrustworthyUrl = (url) => {
 
 const paramsSerializer = (params) => stringify(params, { indices: false });
 
-const getNetworkError = ({ response, request, message }) => {
+const getNetworkError = (error) => {
+  const { response, request, message } = error;
+
+  if (axios.isCancel(error)) {
+    return {
+      message,
+      statusCode: STATUS_CODE_REQUEST_CANCELLED,
+    };
+  }
+
   if (response) {
     return {
       ...response.data,
@@ -33,13 +42,6 @@ const getNetworkError = ({ response, request, message }) => {
       data: request,
       message: 'No response from server',
       statusCode: STATUS_CODE_NO_RESPONSE,
-    };
-  }
-
-  if (message === 'canceled') {
-    return {
-      message,
-      statusCode: STATUS_CODE_REQUEST_CANCELLED,
     };
   }
 
