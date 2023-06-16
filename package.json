@@ -2,7 +2,7 @@
   "name": "nebenan-redux-tools",
   "description": "A set of redux helpers",
   "author": "Good Hood GmbH <tech@nebenan.de>",
-  "license": "SEE LICENSE IN LICENSE FILE",
+  "license": "MIT",
   "homepage": "https://github.com/goodhood-eu/nebenan-redux-tools#readme",
   "repository": "github:good-hood-gmbh/nebenan-redux-tools",
   "bugs": "https://github.com/good-hood-gmbh/nebenan-redux-tools/issues",
