@@ -1,4 +1,4 @@
-import escapeStringRegexp from 'escape-string-regexp-browser';
+import escapeStringRegexp from 'escape-string-regexp';
 
 let baseUrl = '';
 let regex;
