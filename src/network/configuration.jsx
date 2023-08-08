@@ -20,7 +20,6 @@ export const configureNetwork = (options = {}) => {
 
 export const getBaseUrl = () => baseUrl;
 export const getTrustedDomainRegex = () => regex;
-export const getGlobalHooks = () => ({ requestHook, responseHook });
 export const getLocaleHeader = () => locale;
 export const getErrorHandler = () => onError;
 export const getRequestHook = () => requestHook;
