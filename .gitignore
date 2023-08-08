@@ -34,3 +34,5 @@ node_modules/*
 
 # Compiled files
 lib/
+.yalc/
+yalc.lock

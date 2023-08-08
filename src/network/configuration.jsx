@@ -23,3 +23,5 @@ export const getTrustedDomainRegex = () => regex;
 export const getGlobalHooks = () => ({ requestHook, responseHook });
 export const getLocaleHeader = () => locale;
 export const getErrorHandler = () => onError;
+export const getRequestHook = () => requestHook;
+export const getResponseHook = () => responseHook;
