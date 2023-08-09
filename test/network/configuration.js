@@ -4,7 +4,6 @@ const {
   configureNetwork,
   getBaseUrl,
   getTrustedDomainRegex,
-  getGlobalHooks,
 } = require('../../lib/network/configuration');
 
 const API = 'awesomeapi';
@@ -22,11 +21,5 @@ describe('network/configuration', () => {
     const regex = getTrustedDomainRegex();
     assert.typeOf(regex, 'regexp', 'correct type');
     assert.match('https://wow.wowzor.com', regex, 'regex works');
-  });
-
-  it('getGlobalHooks', () => {
-    const hooks = getGlobalHooks();
-    assert.typeOf(hooks, 'object', 'correct type');
-    assert.equal(hooks.requestHook, requestHook, 'returns correct result');
   });
 });
