@@ -4,9 +4,9 @@
   "author": "Good Hood GmbH <tech@nebenan.de>",
   "license": "MIT",
   "homepage": "https://github.com/goodhood-eu/nebenan-redux-tools#readme",
-  "repository": "github:good-hood-gmbh/nebenan-redux-tools",
-  "bugs": "https://github.com/good-hood-gmbh/nebenan-redux-tools/issues",
-  "version": "6.7.0",
+  "repository": "github:goodhood-eu/nebenan-redux-tools",
+  "bugs": "https://github.com/goodhood-eu/nebenan-redux-tools/issues",
+  "version": "6.8.2",
   "files": [
     "lib/*.js",
     "lib/*/*.js"
@@ -24,22 +24,22 @@
     "test:tofile": "npm run compile && TZ='GMT' mocha --no-colors -R spec \"test/**/*.js\" 2>&1 | tee test-report.log"
   },
   "devDependencies": {
-    "@babel/cli": "^7.22.5",
-    "@babel/core": "^7.22.5",
-    "@babel/plugin-transform-runtime": "^7.22.5",
+    "@babel/cli": "^7.22.6",
+    "@babel/core": "^7.22.8",
+    "@babel/plugin-transform-runtime": "^7.22.7",
     "@babel/plugin-transform-strict-mode": "^7.22.5",
-    "@babel/preset-env": "^7.22.5",
+    "@babel/preset-env": "^7.22.7",
     "babel-plugin-add-module-exports": "^1.0.4",
     "browserslist-config-nebenan": "^1.0.1",
     "chai": "^4.3.7",
-    "eslint": "^8.43.0",
+    "eslint": "^8.44.0",
     "eslint-config-nebenan-base": "^2.0.2",
     "mocha": "^10.2.0",
     "sinon": "^15.2.0"
   },
   "dependencies": {
     "axios": "^0.22.0",
-    "escape-string-regexp-browser": "^1.1.0",
+    "escape-string-regexp": "^4.0.0",
     "js-cookie": "^3.0.5",
     "local-storage-adapter": "^2.0.0",
     "lodash": "^4.17.21",

@@ -1,9 +1,8 @@
 import axios from 'axios';
 import { stringify } from 'qs';
-import { invoke } from '../utils';
 
 import { buildPaginationQuery } from './pagination';
-import { getBaseUrl, getGlobalHooks, getLocaleHeader, getTrustedDomainRegex } from './configuration';
+import { getBaseUrl, getLocaleHeader, getRequestHook, getResponseHook, getTrustedDomainRegex } from './configuration';
 import {
   STATUS_CODE_NO_RESPONSE,
   STATUS_CODE_REQUEST_CANCELLED,
@@ -100,23 +99,23 @@ const getRequestConfig = (options = {}) => {
 };
 
 export default (options) => {
-  const { requestHook, responseHook } = getGlobalHooks();
   const requestConfig = getRequestConfig(options);
+  const requestHook = getRequestHook();
+  const responseHook = getResponseHook();
 
   // These methods will mutate config object.
-  invoke(options.customize, requestConfig, options);
-  invoke(requestHook, requestConfig, options);
+  options?.customize?.(requestConfig, options);
+  requestHook?.(requestConfig, options);
 
   const pipeResponse = (response) => {
     const body = (response && response.data) ? response.data : {};
-    invoke(responseHook, body, requestConfig, options);
+    responseHook?.(body, requestConfig, options);
     return body;
   };
 
   const rethrowError = (error) => {
     const networkError = getNetworkError(error);
-
-    invoke(responseHook, networkError, requestConfig, options);
+    responseHook?.(networkError, requestConfig, options);
     throw networkError;
   };
 
