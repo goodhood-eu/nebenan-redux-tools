@@ -24,7 +24,8 @@ const getNetworkError = (error) => {
 
   if (axios.isCancel(error)) {
     return {
-      message,
+      data: request,
+      message: 'Cancelled request',
       statusCode: STATUS_CODE_REQUEST_CANCELLED,
     };
   }
