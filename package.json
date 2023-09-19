@@ -6,7 +6,7 @@
   "homepage": "https://github.com/goodhood-eu/nebenan-redux-tools#readme",
   "repository": "github:goodhood-eu/nebenan-redux-tools",
   "bugs": "https://github.com/goodhood-eu/nebenan-redux-tools/issues",
-  "version": "6.8.2",
+  "version": "6.8.3",
   "files": [
     "lib/*.js",
     "lib/*/*.js"
@@ -24,15 +24,15 @@
     "test:tofile": "npm run compile && TZ='GMT' mocha --no-colors -R spec \"test/**/*.js\" 2>&1 | tee test-report.log"
   },
   "devDependencies": {
-    "@babel/cli": "^7.22.6",
-    "@babel/core": "^7.22.8",
-    "@babel/plugin-transform-runtime": "^7.22.7",
+    "@babel/cli": "^7.22.15",
+    "@babel/core": "^7.22.20",
+    "@babel/plugin-transform-runtime": "^7.22.15",
     "@babel/plugin-transform-strict-mode": "^7.22.5",
-    "@babel/preset-env": "^7.22.7",
+    "@babel/preset-env": "^7.22.20",
     "babel-plugin-add-module-exports": "^1.0.4",
-    "browserslist-config-nebenan": "^1.0.1",
-    "chai": "^4.3.7",
-    "eslint": "^8.44.0",
+    "browserslist-config-nebenan": "^1.0.2",
+    "chai": "^4.3.8",
+    "eslint": "^8.49.0",
     "eslint-config-nebenan-base": "^2.0.2",
     "mocha": "^10.2.0",
     "sinon": "^15.2.0"
