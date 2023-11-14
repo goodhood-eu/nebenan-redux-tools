@@ -6,7 +6,7 @@
   "homepage": "https://github.com/goodhood-eu/nebenan-redux-tools#readme",
   "repository": "github:goodhood-eu/nebenan-redux-tools",
   "bugs": "https://github.com/goodhood-eu/nebenan-redux-tools/issues",
-  "version": "6.9.0-beta.0",
+  "version": "6.9.1-beta.0",
   "files": [
     "lib/*.js",
     "lib/*/*.js"
